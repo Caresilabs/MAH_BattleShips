@@ -60,7 +60,9 @@ namespace Battleship.Model
 
         public void update(float delta)
         {
-            Console.WriteLine(shipFieldLeft.getX(Camera2D.unproject(Mouse.GetState().X, Mouse.GetState().Y).X));
+            shipFieldLeft.update(delta);
+            shipFieldLeft.update(delta);
+            //Console.WriteLine(shipFieldLeft.getX(Camera2D.unproject(Mouse.GetState().X, Mouse.GetState().Y).X));
         }
 
         public ShipField getFieldLeft()
@@ -71,6 +73,11 @@ namespace Battleship.Model
         public ShipField getFieldRight()
         {
             return shipFieldRight;
+        }
+
+        public State getState()
+        {
+            return state;
         }
     }
 }

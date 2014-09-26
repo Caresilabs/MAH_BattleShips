@@ -42,6 +42,26 @@ namespace Battleship.Controller
             renderer.update(delta);
             
             world.update(delta);
+
+            input.update(delta);
+
+            switch (world.getState())
+            {
+                case World.State.Player1Init:
+                    break;
+                case World.State.Player2Init:
+                    break;
+                case World.State.Player1Turn:
+                    break;
+                case World.State.Player2Turn:
+                    break;
+                case World.State.Player1Win:
+                    break;
+                case World.State.Player2Win:
+                    break;
+                default:
+                    break;
+            }
         }
 
 

@@ -28,6 +28,7 @@ namespace Battleship
             
             // Load our assets regions
             loadRegion("tile", 0, 0, 8, 8);
+            loadRegion("ship", 8, 0, 8, 8);
 
             // Load font 
             font = manager.Load<SpriteFont>("Font/font");

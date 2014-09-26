@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Battleship.Model;
+using Battleship.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -48,7 +49,15 @@ namespace Battleship.Entity
         {
             for (int i = 0; i < defaultShipsSize.Length; i++)
             {
-                ships.Add(i, new Ship(20, i * 20, defaultShipsSize[i]));
+                ships.Add(i, new Ship(position.X, position.Y + i * (World.tileSize + 1), defaultShipsSize[i]));
+            }
+        }
+
+        public void update(float delta)
+        {
+            foreach (var item in ships)
+            {
+                item.Value.update(delta);
             }
         }
 
@@ -66,6 +75,16 @@ namespace Battleship.Entity
                     // world.getTilesLeft[j, i] = -1;
                 }
             }
+
+            foreach (var item in ships)
+            {
+                item.Value.draw(batch);
+            }
+        }
+
+        public void placeShip(Ship ship)
+        {
+            ship.setPosition(getX(ship.getX()), getY(ship.getY()));
         }
 
         public int getX(float x)
@@ -81,6 +100,29 @@ namespace Battleship.Entity
         public Ship getShip(int id)
         {
             return ships[id];
+        }
+
+        public Ship getShipByMouse(float x, float y)
+        {
+            Vector2 projectedPosition = Camera2D.unproject(x , y);
+            Point point = new Point((int)projectedPosition.X, (int)projectedPosition.Y);
+
+            foreach (var item in ships)
+            {
+                if (item.Value.getBounds().Contains(point))
+                {
+                    return item.Value;
+                }
+            }
+            return null;
+        }
+
+
+        public void move(Ship ship, float x, float y)
+        {
+            if (ship == null) return;
+
+            ship.setPosition(Camera2D.unproject(x, y));
         }
 
     }

@@ -44,8 +44,10 @@ namespace Battleship.Entity
             this.bounds.Height = (int)height;
         }
 
-        public void draw(SpriteBatch batch)
+        public virtual void draw(SpriteBatch batch)
         {
+            if (hidden) return;
+
             batch.Draw(Assets.getItems(), bounds, region, Color.White, rotation, Vector2.Zero, SpriteEffects.None, 0);
         }
 
@@ -54,6 +56,13 @@ namespace Battleship.Entity
             this.position.X = x;
             this.position.Y = y;
         }
+
+        public void setPosition(Vector2 position)
+        {
+            this.position.X = position.X;
+            this.position.Y = position.Y;
+        }
+
 
         public void setSize(float width, float height)
         {
@@ -64,6 +73,16 @@ namespace Battleship.Entity
         public Rectangle getBounds()
         {
             return bounds;
+        }
+
+        public float getX()
+        {
+            return position.X;
+        }
+
+        public float getY()
+        {
+            return position.Y;
         }
     }
 }
