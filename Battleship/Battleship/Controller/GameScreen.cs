@@ -30,7 +30,7 @@ namespace Battleship.Controller
 
         public override void init()
         {
-            this.world = new World();
+            this.world = new World(World.Mode.PlayerVSPlayer);
             this.renderer = new WorldRenderer(getDefaultViewPort(), getGraphics(), world);
             this.state = GameState.PAUSED;
             this.input = new InputManager(world);
@@ -40,6 +40,8 @@ namespace Battleship.Controller
         {
             stateTime += delta;
             renderer.update(delta);
+            
+            world.update(delta);
         }
 
 

@@ -5,63 +5,72 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Asteroid.Tools;
 using Battleship.Entity;
+using Microsoft.Xna.Framework.Input;
+using Battleship.Tools;
 
 namespace Battleship.Model
 {
     public class World
     {
         // World size
-        public const float fieldWidth = 600;
-        public const float fieldHeight = 600;
+        public const float fieldWidth = 500;
+        public const float fieldHeight = 500;
 
         public const int fieldSize = 10;
 
         public static int tileSize;
 
-        private int[,] tilesLeft = new int[fieldSize, fieldSize];
-        private int[,] tilesRight = new int[fieldSize, fieldSize];
+        private State state;
+        private Mode mode;
 
-        private Dictionary<int, Ship> ships;
+        private ShipField shipFieldLeft;
+        private ShipField shipFieldRight;
 
-        public World()
+        public enum State
         {
-            initFields();
-            tileSize = (int)fieldWidth / fieldSize;
-            this.ships = new Dictionary<int, Ship>();
-           
+            Player1Init, Player2Init, Player1Turn, Player2Turn, Player1Win, Player2Win
         }
 
-        private void initFields()
+        public enum Mode
         {
-            // LEFT Field
-            for (int i = 0; i < fieldSize; i++)
+            PlayerVSAI, PlayerVSPlayer
+        }
+
+        public World(Mode mode)
+        {
+            this.mode = mode;
+            this.state = State.Player1Init;
+
+            tileSize = (int)fieldWidth / fieldSize;
+
+            int y = -250;
+            // Init fields
+            this.shipFieldLeft = new PlayerShipField(-600, y);
+
+            if (mode == Mode.PlayerVSAI)
             {
-                for (int j = 0; j < fieldSize; j++)
-                {
-                    tilesLeft[j, i] = -1;
-                    tilesRight[j, i] = -1;
-                }
+                this.shipFieldRight = new AIShipField(0, y);
             }
+            else
+            {
+                this.shipFieldRight = new PlayerShipField(0, y);
+            }
+
         }
 
         public void update(float delta)
         {
-
+            Console.WriteLine(shipFieldLeft.getX(Camera2D.unproject(Mouse.GetState().X, Mouse.GetState().Y).X));
         }
 
-        public int[,] getTilesLeft()
+        public ShipField getFieldLeft()
         {
-            return tilesLeft;
+            return shipFieldLeft;
         }
 
-        public int[,] getTilesRight()
+        public ShipField getFieldRight()
         {
-            return tilesRight;
-        }
-
-        public Dictionary<int, Ship> getShips()
-        {
-            return ships;
+            return shipFieldRight;
         }
     }
 }

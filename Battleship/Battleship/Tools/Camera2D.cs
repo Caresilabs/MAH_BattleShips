@@ -13,13 +13,14 @@ namespace Battleship.Tools
      */
     public class Camera2D
     {
-        private float rotation;
+        private static Matrix transform;
 
-        private Matrix transform;
         private Vector2 position;
         private Vector2 zoom;
         private GraphicsDevice graphicsDevice;
         private Viewport defaultViewPort;
+
+        private float rotation;
 
         public Camera2D(GraphicsDevice graphicsDevice, Viewport defaultViewPort)
         {
@@ -46,6 +47,11 @@ namespace Battleship.Tools
                 Matrix.CreateTranslation(new Vector3(graphicsDevice.Viewport.Width * 0.5f, graphicsDevice.Viewport.Height * 0.5f, 0));
            
             return transform;
+        }
+
+        public static Vector2 unproject(float x, float y)
+        {
+            return Vector2.Transform(new Vector2(x, y), Matrix.Invert(transform));
         }
 
         public Vector2 getZoom()

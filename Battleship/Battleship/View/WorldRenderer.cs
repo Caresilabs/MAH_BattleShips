@@ -54,16 +54,8 @@ namespace Battleship.View
 
         private void drawTiles(SpriteBatch batch)
         {
-            for (int i = 0; i < World.fieldSize; i++)
-            {
-                for (int j = 0; j < World.fieldSize; j++)
-                {
-                    batch.Draw(Assets.getItems(), new Rectangle(- 400 + j * World.tileSize, -250 + i * World.tileSize, World.tileSize, World.tileSize)
-                        , Assets.getRegion("tile"), Color.White);
-                    //Console.WriteLine(world.getTilesRight()[j, i]);
-                   // world.getTilesLeft[j, i] = -1;
-                }
-            }
+            world.getFieldLeft().draw(batch);
+            world.getFieldRight().draw(batch);
         }
 
         private void drawBackground(SpriteBatch batch)
