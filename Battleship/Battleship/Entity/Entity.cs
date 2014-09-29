@@ -11,6 +11,7 @@ namespace Battleship.Entity
     {
         private Rectangle region;
         private Vector2 position;
+        private Vector2 drawOffset;
         private Rectangle bounds;
 
         private bool hidden;
@@ -24,6 +25,7 @@ namespace Battleship.Entity
             this.rotation = 0;
             this.position = new Vector2(x, y);
             this.bounds = new Rectangle((int)x, (int)y, (int)width, (int)height);
+            this.drawOffset = new Vector2();
             this.width = width;
             this.height = height;
             this.region = region;
@@ -34,7 +36,7 @@ namespace Battleship.Entity
             updateBounds();
         }
 
-        private void updateBounds()
+        public void updateBounds()
         {
             // Position
             this.bounds.X = (int)position.X; //- (int)width/2;
@@ -44,11 +46,19 @@ namespace Battleship.Entity
             this.bounds.Height = (int)height;
         }
 
+        private Rectangle drawRectangle = new Rectangle();
         public virtual void draw(SpriteBatch batch)
         {
             if (hidden) return;
 
-            batch.Draw(Assets.getItems(), bounds, region, Color.White, rotation, Vector2.Zero, SpriteEffects.None, 0);
+            // position
+            this.drawRectangle.X = (int)(position.X + drawOffset.X);
+            this.drawRectangle.Y = (int)(position.Y + drawOffset.Y);
+            // Width
+            this.drawRectangle.Width = (int)width;
+            this.drawRectangle.Height = (int)height;
+
+            batch.Draw(Assets.getItems(), drawRectangle, region, Color.White, rotation, Vector2.Zero, SpriteEffects.None, 0);
         }
 
         public void setPosition(float x, float y)
@@ -63,14 +73,24 @@ namespace Battleship.Entity
             this.position.Y = position.Y;
         }
 
-
         public void setSize(float width, float height)
         {
             this.width = width;
             this.height = height;
         }
 
-        public Rectangle getBounds()
+        public void setDrawOffset(float x, float y)
+        {
+            this.drawOffset.X = x;
+            this.drawOffset.Y = y;
+        }
+
+        public void addRotation(float radians)
+        {
+            this.rotation += radians;
+        }
+
+        public virtual Rectangle getBounds()
         {
             return bounds;
         }

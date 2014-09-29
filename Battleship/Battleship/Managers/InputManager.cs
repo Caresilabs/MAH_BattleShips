@@ -14,6 +14,13 @@ namespace Battleship.Managers
     {
         private World world;
         private Vector2 mouse;
+        private KeyboardState oldKeyState;
+        private MouseState oldMouseState;
+
+        private Ship currentShip;
+        private Vector2 origin;
+        private Vector2 mouseWorld;
+        private bool showingShips;
 
         public InputManager(World world)
         {
@@ -22,51 +29,124 @@ namespace Battleship.Managers
             this.origin = new Vector2();
         }
 
-        private Ship currentShip;
-        private Vector2 origin;
-        public void update(float delta)
+        public void update(float delta, ShipField field, ShipField targetField = null)
         {
             mouse.X = Mouse.GetState().X;
             mouse.Y = Mouse.GetState().Y;
-            Vector2 mouseWorld = Camera2D.unproject(mouse.X, mouse.Y);
 
+            mouseWorld = Camera2D.unproject(mouse.X, mouse.Y);
+
+            // INIT
+            if (world.getState() == World.State.Player1Init || world.getState() == World.State.Player2Init)
+            {
+                updatePlacingShips(field);
+            }
+            else if (world.getState() == World.State.Player1Turn || world.getState() == World.State.Player2Turn)// Our turn
+            {
+                // Draw hover
+                if (Mouse.GetState().LeftButton == ButtonState.Released)
+                {
+                    field.hover(mouseWorld.X, mouseWorld.Y);
+                    if (targetField != null) targetField.hover(mouseWorld.X, mouseWorld.Y, Tile.TileEffect.BombMark);
+                }
+
+                // FIRE MAH LAZER!!
+                if (wasClicked() && targetField != null)
+                {
+                    if (targetField.hit(mouseWorld.X, mouseWorld.Y))
+                    {
+                        nextTurn(field);
+                    }
+                }
+
+                // Show ships
+                if (wasClicked(Keys.Space))
+                {
+                    if (showingShips)
+                        field.hideShips();
+                    else
+                        field.showShips();
+
+                    showingShips = !showingShips;
+                }
+
+                // debug
+                if (wasClicked(Keys.Q))
+                {
+                    field.hideShips();
+                    world.nextTurn();
+                }
+            }
+
+            oldKeyState = Keyboard.GetState();
+            oldMouseState = Mouse.GetState();
+        }
+
+        private void updatePlacingShips(ShipField field)
+        {
             // Catch ship
             if (Mouse.GetState().LeftButton == ButtonState.Pressed && currentShip == null)
             {
-               currentShip = world.getFieldLeft().getShipByMouse(mouse.X, mouse.Y);
-               if (currentShip != null)
-               {
-                   
-                   origin.X = mouseWorld.X - currentShip.getX();
-                   origin.Y = mouseWorld.Y - currentShip.getY();
-               }
-            }
-            else if (Mouse.GetState().LeftButton == ButtonState.Released)
-            {
-                world.getFieldLeft().hover(mouseWorld.X, mouseWorld.Y);
+                currentShip = field.getShipByMouse(mouseWorld.X, mouseWorld.Y);
+                if (currentShip != null)
+                {
+                    origin.X = mouseWorld.X - currentShip.getX();
+                    origin.Y = mouseWorld.Y - currentShip.getY();
+                }
             }
 
             // manage ship
             if (currentShip != null)
             {
+                // Rotate
+                if (wasClicked(Keys.R))
+                {
+                    field.rotateShip(currentShip);
+                    float origX = origin.X;
+                    origin.X -= origin.X - origin.Y;
+                    origin.Y -= origin.Y - origX;
+                }
+
                 if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                 {
-                    world.getFieldLeft().move(currentShip, mouseWorld.X - origin.X, mouseWorld.Y - origin.Y);
+                    field.move(currentShip, mouseWorld.X - origin.X, mouseWorld.Y - origin.Y);
                 }
                 else
                 {
-                   world.getFieldLeft().placeShip(currentShip);
-                   currentShip = null;
-                }
-
-
-                /// Check rotation
-                if (Keyboard.GetState().IsKeyDown(Keys.R))
-                {
-                    world.getFieldLeft().rotateShip(currentShip);
+                    field.placeShip(currentShip);
+                    currentShip = null;
                 }
             }
-           
+
+            // Finished placing boats
+            if (wasClicked(Keys.Space))
+            {
+                field.attachShips();
+                nextTurn(field);
+            }
+        }
+
+        private void nextTurn(ShipField field)
+        {
+            world.nextTurn();
+            showingShips = false;
+            field.hideShips();
+        }
+
+        public bool wasClicked(Keys key)
+        {
+            if (Keyboard.GetState().IsKeyUp(key) && oldKeyState.IsKeyDown(key))
+                return true;
+            else
+                return false;
+        }
+
+        public bool wasClicked()
+        {
+            if (Mouse.GetState().LeftButton == ButtonState.Released && oldMouseState.LeftButton == ButtonState.Pressed)
+                return true;
+            else
+                return false;
         }
     }
 }

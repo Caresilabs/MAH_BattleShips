@@ -55,14 +55,39 @@ namespace Battleship.Model
             {
                 this.shipFieldRight = new PlayerShipField(0, y);
             }
-
         }
 
         public void update(float delta)
         {
             shipFieldLeft.update(delta);
-            shipFieldLeft.update(delta);
-            //Console.WriteLine(shipFieldLeft.getX(Camera2D.unproject(Mouse.GetState().X, Mouse.GetState().Y).X));
+            shipFieldRight.update(delta);
+        }
+
+        public void nextTurn()
+        {
+            if (state == State.Player1Init)
+            {
+                state = State.Player2Init;
+            }
+            else if (state == State.Player2Init)
+            {
+                state = State.Player1Turn;
+            }
+
+            // Turn Loop
+            else if (state == State.Player1Turn)
+            {
+                state = State.Player2Turn;
+                if (shipFieldRight.hasLost())
+                    state = State.Player1Win;
+            }
+            else if (state == State.Player2Turn)
+            {
+                state = State.Player1Turn;
+                if (shipFieldLeft.hasLost())
+                    state = State.Player2Win;
+            }
+
         }
 
         public ShipField getFieldLeft()
@@ -75,9 +100,38 @@ namespace Battleship.Model
             return shipFieldRight;
         }
 
+        public ShipField getCurrentField()
+        {
+            if (state == State.Player1Turn || state == State.Player1Init)
+            {
+                return shipFieldLeft;
+            }
+            else 
+            {
+                return shipFieldRight;
+            }
+        }
+
+        public ShipField getTargetField()
+        {
+            if (state == State.Player1Turn || state == State.Player1Init)
+            {
+                return shipFieldRight;
+            }
+            else
+            {
+                return shipFieldLeft;
+            }
+        }
+
         public State getState()
         {
             return state;
+        }
+
+        public Mode getMode()
+        {
+            return mode;
         }
     }
 }

@@ -28,6 +28,8 @@ namespace Battleship
             
             // Load our assets regions
             loadRegion("tile", 200, 200, 50, 50);
+            loadRegion("tileWater", 200, 100, 50, 50);
+            loadRegion("tileHit", 150, 100, 50, 50);
             
             // ship regions
             loadRegion("ship5", 0, 0, 250, 50);
