@@ -19,33 +19,54 @@ namespace Battleship.Managers
         {
             this.world = world;
             this.mouse = new Vector2();
+            this.origin = new Vector2();
         }
 
         private Ship currentShip;
+        private Vector2 origin;
         public void update(float delta)
         {
             mouse.X = Mouse.GetState().X;
             mouse.Y = Mouse.GetState().Y;
+            Vector2 mouseWorld = Camera2D.unproject(mouse.X, mouse.Y);
 
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            // Catch ship
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed && currentShip == null)
             {
                currentShip = world.getFieldLeft().getShipByMouse(mouse.X, mouse.Y);
-                if (currentShip != null)
-               Console.WriteLine("yaa" );
+               if (currentShip != null)
+               {
+                   
+                   origin.X = mouseWorld.X - currentShip.getX();
+                   origin.Y = mouseWorld.Y - currentShip.getY();
+               }
             }
             else if (Mouse.GetState().LeftButton == ButtonState.Released)
             {
-
+                world.getFieldLeft().hover(mouseWorld.X, mouseWorld.Y);
             }
 
+            // manage ship
             if (currentShip != null)
             {
-                Vector2 pos = Camera2D.unproject(mouse.X, mouse.Y);
-                pos.X -= currentShip.getX();
-                pos.Y -= currentShip.getY();
+                if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                {
+                    world.getFieldLeft().move(currentShip, mouseWorld.X - origin.X, mouseWorld.Y - origin.Y);
+                }
+                else
+                {
+                   world.getFieldLeft().placeShip(currentShip);
+                   currentShip = null;
+                }
 
-                world.getFieldLeft().move(currentShip, mouse.X - pos.X, mouse.Y - pos.Y);
+
+                /// Check rotation
+                if (Keyboard.GetState().IsKeyDown(Keys.R))
+                {
+                    world.getFieldLeft().rotateShip(currentShip);
+                }
             }
+           
         }
     }
 }

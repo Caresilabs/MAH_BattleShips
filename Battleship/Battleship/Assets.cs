@@ -27,8 +27,13 @@ namespace Battleship
             items = manager.Load<Texture2D>("Graphics/items");
             
             // Load our assets regions
-            loadRegion("tile", 0, 0, 8, 8);
-            loadRegion("ship", 8, 0, 8, 8);
+            loadRegion("tile", 200, 200, 50, 50);
+            
+            // ship regions
+            loadRegion("ship5", 0, 0, 250, 50);
+            loadRegion("ship4", 0, 0, 200, 50);
+            loadRegion("ship3", 0, 0, 150, 50);
+            loadRegion("ship2", 0, 0, 100, 50);
 
             // Load font 
             font = manager.Load<SpriteFont>("Font/font");

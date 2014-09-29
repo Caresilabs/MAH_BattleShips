@@ -10,15 +10,27 @@ namespace Battleship.Entity
     public class Ship : Entity
     {
         private int size;
+        private bool isHorizontal;
+
         public Ship(float x, float y, int size)
-            : base(Assets.getRegion("ship"), x, y, size * World.tileSize, World.tileSize)
+            : base(Assets.getRegion("ship" + size), x, y, size * World.tileSize, World.tileSize)
         {
             this.size = size;
+            this.isHorizontal = true;
         }
 
         public void flip()
         {
-            setSize(1, size);
+            if (isHorizontal)
+            {
+                setSize(1 * World.tileSize, size * World.tileSize);
+            }
+            else
+            {
+                setSize(size * World.tileSize, 1 * World.tileSize);
+            }
+
+            isHorizontal = !isHorizontal;
         }
     }
 }

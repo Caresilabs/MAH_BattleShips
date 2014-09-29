@@ -30,6 +30,7 @@ namespace Battleship
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
 
+            IsMouseVisible = true;
             Window.AllowUserResizing = true;
             // graphics.ToggleFullScreen();
             Window.Title = "RETRO ALPHA MEGA DEMOLITION by Simon Bothen"; //  set title to our game name
@@ -85,9 +86,9 @@ namespace Battleship
             // Draw screen
             currentScreen.draw(spriteBatch);
 
-            spriteBatch.Begin();
-            spriteBatch.Draw(Assets.getItems(), mousePosition, mouseTex , Color.White);
-            spriteBatch.End();
+           // spriteBatch.Begin();
+           // spriteBatch.Draw(Assets.getItems(), mousePosition, mouseTex , Color.White);
+           // spriteBatch.End();
             base.Draw(gameTime);
         }
 
