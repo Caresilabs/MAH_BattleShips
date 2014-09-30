@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Battleship.Entity;
 using Battleship.Managers;
 using Battleship.Model;
 using Battleship.View;
@@ -57,6 +58,10 @@ namespace Battleship.Controller
                     {
                         input.update(delta, world.getCurrentField());
                     }
+                    else
+                    {
+                        ((AIShipField)world.getCurrentField()).updateAI(delta, world.getTargetField());
+                    }
                     break;
                 case World.State.Player1Turn:
                     input.update(delta, world.getCurrentField(), world.getTargetField());
@@ -65,6 +70,10 @@ namespace Battleship.Controller
                     if (world.getMode() == World.Mode.PlayerVSPlayer)
                     {
                         input.update(delta, world.getCurrentField(), world.getTargetField());
+                    }
+                    else
+                    {
+                        ((AIShipField)world.getCurrentField()).updateAI(delta, world.getTargetField());
                     }
                     break;
                 case World.State.Player1Win:
@@ -79,7 +88,7 @@ namespace Battleship.Controller
 
         public override void draw(SpriteBatch batch)
         {
-            getGraphics().Clear(Color.Magenta);
+            getGraphics().Clear(Color.SeaGreen);
 
             // Draw game
             renderer.render(batch);

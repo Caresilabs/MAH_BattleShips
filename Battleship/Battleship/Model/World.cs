@@ -43,17 +43,18 @@ namespace Battleship.Model
 
             tileSize = (int)fieldWidth / fieldSize;
 
-            int y = -250;
+            int y = -170;
+            float x = 640-fieldWidth;
             // Init fields
-            this.shipFieldLeft = new PlayerShipField(-600, y);
+            this.shipFieldLeft = new PlayerShipField(this, -640 +x/2, y);
 
             if (mode == Mode.PlayerVSAI)
             {
-                this.shipFieldRight = new AIShipField(0, y);
+                this.shipFieldRight = new AIShipField(this, x/2, y);
             }
             else
             {
-                this.shipFieldRight = new PlayerShipField(0, y);
+                this.shipFieldRight = new PlayerShipField(this, x/2, y);
             }
         }
 
@@ -79,15 +80,26 @@ namespace Battleship.Model
             {
                 state = State.Player2Turn;
                 if (shipFieldRight.hasLost())
+                {
                     state = State.Player1Win;
+                    gameOver();
+                }
             }
             else if (state == State.Player2Turn)
             {
                 state = State.Player1Turn;
                 if (shipFieldLeft.hasLost())
+                {
                     state = State.Player2Win;
+                    gameOver();
+                }
             }
 
+        }
+
+        public void gameOver() {
+            shipFieldLeft.showShips();
+            shipFieldRight.showShips();
         }
 
         public ShipField getFieldLeft()

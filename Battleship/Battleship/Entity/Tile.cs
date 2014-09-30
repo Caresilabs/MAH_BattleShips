@@ -37,18 +37,33 @@ namespace Battleship.Entity
 
         public void draw(SpriteBatch batch, Vector2 position)
         {
-            Color color = Color.Green;
-            if (effect == TileEffect.Selected)
-            {
-                color = Color.Blue;
-            }
-            else if (effect == TileEffect.BombMark)
-            {
-                color = Color.Red;
-            }
+            Color color = Color.White;
 
             batch.Draw(Assets.getItems(), new Rectangle((int)(position.X + x * World.tileSize), (int)(position.Y + y * World.tileSize), World.tileSize, World.tileSize)
-                , region, color, 0, Vector2.Zero, SpriteEffects.None, id == TILE_EMPTY ?.2f : 0);
+              , Assets.getRegion("tile"), color, 0, Vector2.Zero, SpriteEffects.None, .5f);
+
+            // Draw action
+            if (id == TILE_HIT || id == TILE_WATER)
+            {
+                batch.Draw(Assets.getItems(), new Rectangle((int)(position.X + x * World.tileSize), (int)(position.Y + y * World.tileSize), World.tileSize, World.tileSize)
+              , region, color, 0, Vector2.Zero, SpriteEffects.None, .02f);
+            }
+
+            // Effects
+            if (id >= 0)
+            {
+                if (effect == TileEffect.Selected)
+                {
+                    batch.Draw(Assets.getItems(), new Rectangle((int)(position.X + x * World.tileSize), (int)(position.Y + y * World.tileSize), World.tileSize, World.tileSize)
+                    , Assets.getRegion("tileSelect"), Color.White, 0, Vector2.Zero, SpriteEffects.None, .2f);
+                }
+
+                if (effect == TileEffect.BombMark)
+                {
+                    batch.Draw(Assets.getItems(), new Rectangle((int)(position.X + x * World.tileSize), (int)(position.Y + y * World.tileSize), World.tileSize, World.tileSize)
+                    , Assets.getRegion("tileBomb"), Color.White, 0, Vector2.Zero, SpriteEffects.None, .2f);
+                }
+            }
         }
 
         public bool hit()

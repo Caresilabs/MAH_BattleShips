@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Battleship.Model;
 
 namespace Battleship.Entity
 {
     public class PlayerShipField : ShipField
     {
-        public PlayerShipField(float x, float y)
-            : base(x, y)
+        public PlayerShipField(World world, float x, float y)
+            : base(world, x, y)
         {
 
         } 

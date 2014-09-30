@@ -11,6 +11,15 @@ namespace Battleship.Entity
 {
     public class ShipField
     {
+        private static readonly string[] Columns = new[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ", "BA", "BB", "BC", "BD", "BE", "BF", "BG", "BH" };
+        public static string IndexToColumn(int index)
+        {
+            if (index <= 0)
+                throw new IndexOutOfRangeException("Index must be positive");
+
+            return Columns[index - 1];
+        }
+
         private int[] defaultShipsSize = new int[] {
             5, 4, 3, 3, 2
         };
@@ -19,11 +28,13 @@ namespace Battleship.Entity
         private Dictionary<int, Ship> ships;
         private Vector2 position;
         private Rectangle bounds;
+        private World world;
 
         private bool isAlive;
 
-        public ShipField(float x, float y)
+        public ShipField(World world, float x, float y)
         {
+            this.world = world;
             this.ships = new Dictionary<int, Ship>();
             this.position = new Vector2(x, y);
             this.bounds = new Rectangle((int)x, (int)y, World.fieldSize * World.tileSize, World.fieldSize * World.tileSize);
@@ -49,11 +60,13 @@ namespace Battleship.Entity
         {
             for (int i = 0; i < defaultShipsSize.Length; i++)
             {
-                ships.Add(i + 1, new Ship(position.X, position.Y + i * (World.tileSize + 1), defaultShipsSize[i]));
+                Ship ship = new Ship(position.X, position.Y + i * (World.tileSize + 1), defaultShipsSize[i]);
+                placeShip(ship);
+                ships.Add(i + 1, ship);
             }
         }
 
-        public void update(float delta)
+        public virtual void update(float delta)
         {
             clearHover();
 
@@ -77,6 +90,20 @@ namespace Battleship.Entity
             foreach (var item in ships)
             {
                 item.Value.draw(batch);
+            }
+
+            // Draw column name
+            for (int i = 0; i < World.fieldSize; i++)
+            {
+                Vector2 pos = new Vector2(position.X + i * World.tileSize + World.tileSize/3, position.Y - 25);
+                batch.DrawString(Assets.font, IndexToColumn(i+1), pos, Color.White);
+            }
+
+            // Draw row name
+            for (int i = 0; i < World.fieldSize; i++)
+            {
+                Vector2 pos = new Vector2(position.X - 25, position.Y + i * World.tileSize + World.tileSize / 3);
+                batch.DrawString(Assets.font, (i + 1).ToString(), pos, Color.White);
             }
         }
 
@@ -292,6 +319,10 @@ namespace Battleship.Entity
         public bool hasLost()
         {
             return !isAlive;
+        }
+
+        public World getWorld() {
+            return world;
         }
     }
 }

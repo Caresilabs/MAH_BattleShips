@@ -25,6 +25,35 @@ namespace Battleship.View
         public void draw(SpriteBatch batch)
         {
             batch.DrawString(Assets.font, "" + world.getState(), Vector2.Zero, Color.White);
+
+            switch (world.getState())
+            {
+                case World.State.Player1Init:
+                    batch.DrawString(Assets.font, "Press Space to finish", new Vector2(0, 50), Color.White);
+                    break;
+                case World.State.Player2Init:
+                    if (world.getMode() == World.Mode.PlayerVSPlayer)
+                    {
+                        batch.DrawString(Assets.font, "Press Space to finish", new Vector2(0, 50), Color.White);
+                    }
+                    break;
+                case World.State.Player1Turn:
+                    batch.DrawString(Assets.font, "Press Space to Toggle ships visible", new Vector2(0, 50), Color.White);
+                    break;
+                case World.State.Player2Turn:
+                    if (world.getMode() == World.Mode.PlayerVSPlayer)
+                    {
+                        batch.DrawString(Assets.font, "Press Space to Toggle ships visible", new Vector2(0, 50), Color.White);
+                    }
+                    break;
+                case World.State.Player1Win:
+                    break;
+                case World.State.Player2Win:
+                    break;
+                default:
+                    break;
+            }
+           
         }
     }
 }

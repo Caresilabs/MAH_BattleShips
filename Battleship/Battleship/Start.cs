@@ -22,6 +22,8 @@ namespace Battleship
         private Rectangle mouseTex;
         private Vector2 mousePosition;
 
+        private float aspectRatio;
+
         public Start()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -29,11 +31,13 @@ namespace Battleship
 
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
+            aspectRatio = graphics.PreferredBackBufferWidth / (float)graphics.PreferredBackBufferHeight;
 
             IsMouseVisible = true;
             Window.AllowUserResizing = true;
             // graphics.ToggleFullScreen();
-            Window.Title = "RETRO ALPHA MEGA DEMOLITION by Simon Bothen"; //  set title to our game name
+            Window.Title = "Battlescarzz by Simon Bothen"; //  set title to our game name
+            Window.ClientSizeChanged += new EventHandler<EventArgs>(WindowSizeChanged);
         }
 
         protected override void Initialize()
@@ -86,9 +90,9 @@ namespace Battleship
             // Draw screen
             currentScreen.draw(spriteBatch);
 
-           // spriteBatch.Begin();
-           // spriteBatch.Draw(Assets.getItems(), mousePosition, mouseTex , Color.White);
-           // spriteBatch.End();
+            // spriteBatch.Begin();
+            // spriteBatch.Draw(Assets.getItems(), mousePosition, mouseTex , Color.White);
+            // spriteBatch.End();
             base.Draw(gameTime);
         }
 
@@ -106,6 +110,17 @@ namespace Battleship
             newScreen.setGraphics(GraphicsDevice);
             newScreen.setDefaultViewPort(GraphicsDevice.Viewport);
             currentScreen.init();
+        }
+
+        public void WindowSizeChanged(object sender, EventArgs e)
+        {
+            int new_width = graphics.GraphicsDevice.Viewport.Width;
+            int new_height = graphics.GraphicsDevice.Viewport.Height;
+
+
+            graphics.PreferredBackBufferWidth = new_width;
+            graphics.PreferredBackBufferHeight = (int)(new_width / aspectRatio);
+            graphics.ApplyChanges();
         }
 
         private Screen getStartScreen()

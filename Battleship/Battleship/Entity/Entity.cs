@@ -18,6 +18,7 @@ namespace Battleship.Entity
         private float rotation;
         private float width;
         private float height;
+        private float zIndex;
 
         public Entity(Rectangle region, float x, float y, float width, float height)
         {
@@ -29,6 +30,7 @@ namespace Battleship.Entity
             this.width = width;
             this.height = height;
             this.region = region;
+            this.zIndex = 0;
         }
 
         public virtual void update(float delta)
@@ -58,7 +60,7 @@ namespace Battleship.Entity
             this.drawRectangle.Width = (int)width;
             this.drawRectangle.Height = (int)height;
 
-            batch.Draw(Assets.getItems(), drawRectangle, region, Color.White, rotation, Vector2.Zero, SpriteEffects.None, 0);
+            batch.Draw(Assets.getItems(), drawRectangle, region, Color.White, rotation, Vector2.Zero, SpriteEffects.None, zIndex);
         }
 
         public void setPosition(float x, float y)
@@ -88,6 +90,11 @@ namespace Battleship.Entity
         public void addRotation(float radians)
         {
             this.rotation += radians;
+        }
+
+        public void setZIndex(float z)
+        {
+            this.zIndex = z;
         }
 
         public virtual Rectangle getBounds()
