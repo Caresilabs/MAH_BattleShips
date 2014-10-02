@@ -76,13 +76,13 @@ namespace Battleship.Controller
                     }
                     break;
                 case World.State.Player1Win:
-                    if (MathUtils.random(1, 10) >= 6)
+                    if (MathUtils.random(1, 10) >= 5)
                     {
                         spawnConfetti();
                     }
                     break;
                 case World.State.Player2Win:
-                    if (MathUtils.random(1, 10) >= 6)
+                    if (MathUtils.random(1, 10) >= 5)
                     {
                         spawnConfetti();
                     }
@@ -115,11 +115,9 @@ namespace Battleship.Controller
             confettis.Add(confetti);
         }
 
-
         public override void draw(SpriteBatch batch)
         {
             getGraphics().Clear(Color.SeaGreen);
-
             // Draw game
             renderer.render(batch);
 

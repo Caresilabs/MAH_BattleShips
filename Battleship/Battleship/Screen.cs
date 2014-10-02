@@ -33,6 +33,11 @@ namespace Battleship
             this.game = game;
         }
 
+        public Game getGame()
+        {
+            return game;
+        }
+
         public GraphicsDevice getGraphics()
         {
             return graphics;

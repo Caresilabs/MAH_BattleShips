@@ -71,15 +71,20 @@ namespace Battleship.View
             }
 
             if (dialogText != null)
-                drawCenterString(batch, dialogText, 120);
+                drawCenterString(batch, dialogText, 120, Color.Red);
         }
 
-        public static void drawCenterString(SpriteBatch batch, string text, float y, float scale = 1)
+        public static void drawCenterString(SpriteBatch batch, string text, float y, Color color, float scale = 1)
         {
             batch.DrawString(Assets.font, text,
                     new Vector2(
                          batch.GraphicsDevice.Viewport.Width / 2 - ((Assets.font.MeasureString(text).Length() / 2) * scale), y),
-                            Color.White, 0, Vector2.Zero, new Vector2(scale, scale), SpriteEffects.None, 0);
+                         color, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
+        }
+
+        public static void drawCenterString(SpriteBatch batch, string text, float y, float scale = 1)
+        {
+            drawCenterString(batch, text, y, Color.White, scale);
         }
 
         public static void setDialogText(string text)

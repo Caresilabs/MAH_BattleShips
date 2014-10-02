@@ -45,7 +45,7 @@ namespace Battleship.Entity
         private World world;
 
         private bool isAlive;
-        private int shoots;
+        private int hits;
         private string selectedAttack;
 
         public ShipField(World world, float x, float y)
@@ -120,7 +120,7 @@ namespace Battleship.Entity
 
             // Draw shoots
             Vector2 textPos = new Vector2(position.X + bounds.Width/2 - 50, position.Y + bounds.Height + 2);
-            batch.DrawString(Assets.font, "Shots fired: " + shoots, textPos, Color.White);
+            batch.DrawString(Assets.font, "Hits: " + hits, textPos, Color.White);
         }
 
         // Return true if hit was done correctly
@@ -132,7 +132,7 @@ namespace Battleship.Entity
                 int tileId = tile.getId();
                 if (tile.hit())
                 {
-                    shoots++;
+                    hits++;
 
                     // Check if all parts is down
                     if (getAliveShipParts(tileId) == 0)

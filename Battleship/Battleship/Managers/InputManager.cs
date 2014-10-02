@@ -186,7 +186,7 @@ namespace Battleship.Managers
             if (currentShip != null)
             {
                 // Rotate
-                if (wasClicked(Keys.R))
+                if (wasRightClicked())
                 {
                     field.rotateShip(currentShip);
                     float origX = origin.X;
@@ -231,6 +231,14 @@ namespace Battleship.Managers
         public bool wasClicked()
         {
             if (Mouse.GetState().LeftButton == ButtonState.Released && oldMouseState.LeftButton == ButtonState.Pressed)
+                return true;
+            else
+                return false;
+        }
+
+        public bool wasRightClicked()
+        {
+            if (Mouse.GetState().RightButton == ButtonState.Released && oldMouseState.RightButton == ButtonState.Pressed)
                 return true;
             else
                 return false;

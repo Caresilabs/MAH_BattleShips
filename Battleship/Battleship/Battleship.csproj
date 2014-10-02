@@ -78,6 +78,7 @@
     <Compile Include="Entity\AIShipField.cs" />
     <Compile Include="Entity\Confetti.cs" />
     <Compile Include="Entity\Entity.cs" />
+    <Compile Include="Entity\MenuButton.cs" />
     <Compile Include="Entity\PlayerShipField.cs" />
     <Compile Include="Entity\Ship.cs" />
     <Compile Include="Entity\ShipField.cs" />
