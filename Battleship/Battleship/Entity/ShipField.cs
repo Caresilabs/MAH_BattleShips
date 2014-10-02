@@ -6,6 +6,7 @@ using Battleship.Model;
 using Battleship.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Battleship.View;
 
 namespace Battleship.Entity
 {
@@ -20,25 +21,41 @@ namespace Battleship.Entity
             return Columns[index - 1];
         }
 
-        private int[] defaultShipsSize = new int[] {
-            5, 4, 3, 3, 2
+        private Dictionary<string, int> battleShips = new Dictionary<string, int>() 
+        { 
+            { "Aircraft carrier", 5 },
+            { "Battleship", 4 },
+            { "Submarine", 3 },
+            { "Destroyer", 3 },
+            { "Patrol boat", 2 }
         };
 
-        private Tile[,] tiles = new Tile[World.fieldSize, World.fieldSize];
+        private Dictionary<string, bool> attacks = new Dictionary<string, bool>() 
+        { 
+            { "Normal Strike", true },
+            { "Horizontal Strike", true },
+            { "Vertical Strike", true },
+            { "Circle Strike", true }
+        };
+
+        private Tile[,] tiles = new Tile[World.FIELD_SIZE, World.FIELD_SIZE];
         private Dictionary<int, Ship> ships;
         private Vector2 position;
         private Rectangle bounds;
         private World world;
 
         private bool isAlive;
+        private int shoots;
+        private string selectedAttack;
 
         public ShipField(World world, float x, float y)
         {
             this.world = world;
             this.ships = new Dictionary<int, Ship>();
             this.position = new Vector2(x, y);
-            this.bounds = new Rectangle((int)x, (int)y, World.fieldSize * World.tileSize, World.fieldSize * World.tileSize);
+            this.bounds = new Rectangle((int)x, (int)y, World.FIELD_SIZE * World.TILE_SIZE, World.FIELD_SIZE * World.TILE_SIZE);
             this.isAlive = true;
+            this.selectedAttack = attacks.Keys.ToArray()[0];
 
             initFields();
             addDefaultShips();
@@ -47,9 +64,9 @@ namespace Battleship.Entity
         private void initFields()
         {
             // LEFT Field
-            for (int i = 0; i < World.fieldSize; i++)
+            for (int i = 0; i < World.FIELD_SIZE; i++)
             {
-                for (int j = 0; j < World.fieldSize; j++)
+                for (int j = 0; j < World.FIELD_SIZE; j++)
                 {
                     tiles[j, i] = new Tile(j, i);
                 }
@@ -58,9 +75,10 @@ namespace Battleship.Entity
 
         private void addDefaultShips()
         {
-            for (int i = 0; i < defaultShipsSize.Length; i++)
+            for (int i = 0; i < battleShips.Count; i++)
             {
-                Ship ship = new Ship(position.X, position.Y + i * (World.tileSize + 1), defaultShipsSize[i]);
+                Ship ship = new Ship(battleShips.Keys.ToArray()[i], position.X, position.Y + i * (World.TILE_SIZE + 1),
+                    battleShips.Values.ToArray()[i]);
                 placeShip(ship);
                 ships.Add(i + 1, ship);
             }
@@ -78,9 +96,17 @@ namespace Battleship.Entity
 
         public void draw(SpriteBatch batch)
         {
-            for (int i = 0; i < World.fieldSize; i++)
+            for (int i = 0; i < World.FIELD_SIZE; i++)
             {
-                for (int j = 0; j < World.fieldSize; j++)
+                // Draw Columns and Rows
+                Vector2 pos = new Vector2(position.X + i * World.TILE_SIZE + World.TILE_SIZE / 3, position.Y - 25);
+                batch.DrawString(Assets.font, IndexToColumn(i + 1), pos, Color.White);
+
+                pos = new Vector2(position.X - 25, position.Y + i * World.TILE_SIZE + World.TILE_SIZE / 3);
+                batch.DrawString(Assets.font, (i + 1).ToString(), pos, Color.White);
+
+                // Draw tiles
+                for (int j = 0; j < World.FIELD_SIZE; j++)
                 {
                     tiles[j, i].draw(batch, position);
                 }
@@ -92,19 +118,9 @@ namespace Battleship.Entity
                 item.Value.draw(batch);
             }
 
-            // Draw column name
-            for (int i = 0; i < World.fieldSize; i++)
-            {
-                Vector2 pos = new Vector2(position.X + i * World.tileSize + World.tileSize/3, position.Y - 25);
-                batch.DrawString(Assets.font, IndexToColumn(i+1), pos, Color.White);
-            }
-
-            // Draw row name
-            for (int i = 0; i < World.fieldSize; i++)
-            {
-                Vector2 pos = new Vector2(position.X - 25, position.Y + i * World.tileSize + World.tileSize / 3);
-                batch.DrawString(Assets.font, (i + 1).ToString(), pos, Color.White);
-            }
+            // Draw shoots
+            Vector2 textPos = new Vector2(position.X + bounds.Width/2 - 50, position.Y + bounds.Height + 2);
+            batch.DrawString(Assets.font, "Shots fired: " + shoots, textPos, Color.White);
         }
 
         // Return true if hit was done correctly
@@ -116,11 +132,16 @@ namespace Battleship.Entity
                 int tileId = tile.getId();
                 if (tile.hit())
                 {
+                    shoots++;
+
                     // Check if all parts is down
                     if (getAliveShipParts(tileId) == 0)
                     {
                         ships[tileId].kill();
-                        checkIfDead();
+                        if (checkIfAlive())
+                        {
+                            HUD.setDialogText("You sunk my " + ships[tileId].getName());
+                        }
                     }
                     return true;
                 }
@@ -128,22 +149,24 @@ namespace Battleship.Entity
             return false;
         }
 
-        private void checkIfDead()
+        private bool checkIfAlive()
         {
             foreach (var item in ships)
             {
-                if (item.Value.isShipAlive()) {
-                    return;
+                if (item.Value.isShipAlive())
+                {
+                    return true;
                 }
             }
             isAlive = false;
+            return false;
         }
 
         public void placeShip(Ship ship)
         {
             ship.setPosition(
-                (getX(ship.getX() + World.tileSize / 2) * World.tileSize) + position.X, // X
-                (getY(ship.getY() + World.tileSize / 2) * World.tileSize) + position.Y); //Y
+                (getX(ship.getX() + World.TILE_SIZE / 2) * World.TILE_SIZE) + position.X, // X
+                (getY(ship.getY() + World.TILE_SIZE / 2) * World.TILE_SIZE) + position.Y); //Y
 
             if (!bounds.Contains(ship.getBounds()))
             {
@@ -160,7 +183,7 @@ namespace Battleship.Entity
                 // Check Y
                 if (ship.getY() < position.Y)
                 {
-                    ship.setPosition(ship.getX(), position.Y );
+                    ship.setPosition(ship.getX(), position.Y);
                 }
                 else if (ship.getY() + ship.getBounds().Height > bounds.Bottom)
                 {
@@ -208,8 +231,8 @@ namespace Battleship.Entity
                     foreach (var item in ships)
                     {
                         if (item.Value.getBounds().Contains
-                            ((int)(position.X + j * World.tileSize + World.tileSize / 2), 
-                            (int)(position.Y + i * World.tileSize + World.tileSize / 2)))
+                            ((int)(position.X + j * World.TILE_SIZE + World.TILE_SIZE / 2),
+                            (int)(position.Y + i * World.TILE_SIZE + World.TILE_SIZE / 2)))
                         {
                             tiles[j, i].setId(item.Key);
                             break;
@@ -228,7 +251,7 @@ namespace Battleship.Entity
 
         public void hover(float x, float y, Tile.TileEffect effect = Tile.TileEffect.Selected)
         {
-            if(! bounds.Contains(new Point((int)x, (int)y))) return;
+            if (!bounds.Contains(new Point((int)x, (int)y))) return;
 
             int u = getX(x);
             int v = getY(y);
@@ -275,6 +298,16 @@ namespace Battleship.Entity
             return parts;
         }
 
+        public void consumeAttack()
+        {
+            // Consume attack, if not normal attack
+            if (selectedAttack != "Normal Strike")
+            {
+                attacks[selectedAttack] = false;
+                selectedAttack = "Normal Strike";
+            }
+        }
+
         public void hideShips()
         {
             foreach (var item in ships)
@@ -293,12 +326,12 @@ namespace Battleship.Entity
 
         public int getX(float x)
         {
-            return (int)(((x - position.X) / World.fieldWidth) * World.fieldSize);
+            return (int)(((x - position.X) / World.FIELD_WIDTH) * World.FIELD_SIZE);
         }
 
         public int getY(float y)
         {
-            return (int)(((y - position.Y) / World.fieldHeight) * World.fieldSize);
+            return (int)(((y - position.Y) / World.FIELD_HEIGHT) * World.FIELD_SIZE);
         }
 
         public Ship getShip(int id)
@@ -311,6 +344,19 @@ namespace Battleship.Entity
             ship.flip();
         }
 
+        public void selectAttack(int id)
+        {
+            if (attacks.Values.ToArray()[id] == true)
+            {
+                this.selectedAttack = attacks.Keys.ToArray()[id];
+            }
+        }
+
+        public string getSelectedAttack()
+        {
+            return selectedAttack;
+        }
+
         public Rectangle getBounds()
         {
             return bounds;
@@ -321,8 +367,14 @@ namespace Battleship.Entity
             return !isAlive;
         }
 
-        public World getWorld() {
+        public World getWorld()
+        {
             return world;
+        }
+
+        public Dictionary<string, bool> getAttacks()
+        {
+            return attacks;
         }
     }
 }

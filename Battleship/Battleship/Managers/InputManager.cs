@@ -7,6 +7,7 @@ using Battleship.Model;
 using Battleship.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Battleship.View;
 
 namespace Battleship.Managers
 {
@@ -43,19 +44,92 @@ namespace Battleship.Managers
             }
             else if (world.getState() == World.State.Player1Turn || world.getState() == World.State.Player2Turn)// Our turn
             {
+                updateChangeAttack(field);
+
                 // Draw hover
-                if (Mouse.GetState().LeftButton == ButtonState.Released)
+                field.hover(mouseWorld.X, mouseWorld.Y);
+
+                // Hover attacks
+                if (targetField != null)
                 {
-                    field.hover(mouseWorld.X, mouseWorld.Y);
-                    if (targetField != null) targetField.hover(mouseWorld.X, mouseWorld.Y, Tile.TileEffect.BombMark);
+                    if (field.getSelectedAttack() == "Normal Strike")
+                    {
+                        targetField.hover(mouseWorld.X, mouseWorld.Y, Tile.TileEffect.BombMark);
+                    }
+                    else if (field.getSelectedAttack() == "Horizontal Strike")
+                    {
+                        for (int i = 0; i < World.FIELD_SIZE; i++)
+                        {
+                            targetField.hover(targetField.getBounds().X + i * World.TILE_SIZE, mouseWorld.Y, Tile.TileEffect.BombMark);
+                        }
+                    }
+                    else if (field.getSelectedAttack() == "Vertical Strike")
+                    {
+                        for (int i = 0; i < World.FIELD_SIZE; i++)
+                        {
+                            targetField.hover(mouseWorld.X, targetField.getBounds().Y + i * World.TILE_SIZE, Tile.TileEffect.BombMark);
+                        }
+                    }
+                    else if (field.getSelectedAttack() == "Circle Strike")
+                    {
+                        targetField.hover(mouseWorld.X, mouseWorld.Y + World.TILE_SIZE, Tile.TileEffect.BombMark);
+                        targetField.hover(mouseWorld.X, mouseWorld.Y - World.TILE_SIZE, Tile.TileEffect.BombMark);
+                        targetField.hover(mouseWorld.X + World.TILE_SIZE, mouseWorld.Y, Tile.TileEffect.BombMark);
+                        targetField.hover(mouseWorld.X - World.TILE_SIZE, mouseWorld.Y, Tile.TileEffect.BombMark);
+                    }
+                    
                 }
 
-                // FIRE MAH LAZER!!
+                // FIRE MAH LAZER!! Actual shooting
                 if (wasClicked() && targetField != null)
                 {
-                    if (targetField.hit(mouseWorld.X, mouseWorld.Y))
+                    if (field.getSelectedAttack() == "Normal Strike")
                     {
-                        nextTurn(field);
+                        if (targetField.hit(mouseWorld.X, mouseWorld.Y))
+                        {
+                            field.consumeAttack();
+                            nextTurn(field);
+                        }
+                    }
+                    else if (field.getSelectedAttack() == "Horizontal Strike")
+                    {
+                        bool hit = false;
+                        for (int i = 0; i < World.FIELD_SIZE; i++)
+                        {
+                            if (targetField.hit(targetField.getBounds().X + i * World.TILE_SIZE, mouseWorld.Y)) hit = true;
+                        }
+                        if (hit)
+                        {
+                            field.consumeAttack();
+                            nextTurn(field);
+                        }
+                    }
+                    else if (field.getSelectedAttack() == "Vertical Strike")
+                    {
+                        bool hit = false;
+                        for (int i = 0; i < World.FIELD_SIZE; i++)
+                        {
+                            if (targetField.hit(mouseWorld.X, targetField.getBounds().Y + i * World.TILE_SIZE)) hit = true;
+                        }
+                        if (hit)
+                        {
+                            field.consumeAttack();
+                            nextTurn(field);
+                        }
+                    }
+                    else if (field.getSelectedAttack() == "Circle Strike")
+                    {
+                        bool hit = false;
+                        if (targetField.hit(mouseWorld.X, mouseWorld.Y + World.TILE_SIZE)) hit = true;
+                        if (targetField.hit(mouseWorld.X, mouseWorld.Y - World.TILE_SIZE)) hit = true;
+                        if (targetField.hit(mouseWorld.X + World.TILE_SIZE, mouseWorld.Y)) hit = true;
+                        if (targetField.hit(mouseWorld.X - World.TILE_SIZE, mouseWorld.Y)) hit = true;
+
+                        if (hit)
+                        {
+                            field.consumeAttack();
+                            nextTurn(field);
+                        }
                     }
                 }
 
@@ -69,17 +143,30 @@ namespace Battleship.Managers
 
                     showingShips = !showingShips;
                 }
-
-                // debug
-                if (wasClicked(Keys.Q))
-                {
-                    field.hideShips();
-                    world.nextTurn();
-                }
             }
 
             oldKeyState = Keyboard.GetState();
             oldMouseState = Mouse.GetState();
+        }
+
+        private void updateChangeAttack(ShipField field)
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.D1))
+            {
+                field.selectAttack(0);
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.D2))
+            {
+                field.selectAttack(1);
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.D3))
+            {
+                field.selectAttack(2);
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.D4))
+            {
+                field.selectAttack(3);
+            }
         }
 
         private void updatePlacingShips(ShipField field)

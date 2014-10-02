@@ -74,14 +74,15 @@
   <ItemGroup>
     <Compile Include="Assets.cs" />
     <Compile Include="Controller\GameScreen.cs" />
+    <Compile Include="Controller\MainMenuScreen.cs" />
     <Compile Include="Entity\AIShipField.cs" />
+    <Compile Include="Entity\Confetti.cs" />
     <Compile Include="Entity\Entity.cs" />
     <Compile Include="Entity\PlayerShipField.cs" />
     <Compile Include="Entity\Ship.cs" />
     <Compile Include="Entity\ShipField.cs" />
     <Compile Include="Entity\Tile.cs" />
     <Compile Include="Managers\InputManager.cs" />
-    <Compile Include="Managers\ShootManager.cs" />
     <Compile Include="Model\World.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />

@@ -14,12 +14,14 @@ namespace Battleship.Entity
         private bool isHorizontal;
         private bool isVisible;
         private bool isAlive;
+        private string name;
 
         private Vector2 grabPosition;
 
-        public Ship(float x, float y, int size)
-            : base(Assets.getRegion("ship" + size), x, y, size * World.tileSize, World.tileSize)
+        public Ship(string name, float x, float y, int size)
+            : base(Assets.getRegion("ship" + size), x, y, size * World.TILE_SIZE, World.TILE_SIZE)
         {
+            this.name = name;
             this.size = size;
             this.isHorizontal = true;
             this.isVisible = true;
@@ -40,14 +42,12 @@ namespace Battleship.Entity
             if (isHorizontal)
             {
                 addRotation((float)Math.PI / 2 + (float)Math.PI);
-                setDrawOffset(0, World.tileSize*size);
-                //setSize(1 * World.tileSize, size * World.tileSize);
+                setDrawOffset(0, World.TILE_SIZE * size);
             }
             else
             {
                 setDrawOffset(0,0);
                 addRotation(-((float)Math.PI / 2 + (float)Math.PI));
-                //setSize(size * World.tileSize, 1 * World.tileSize);
             }
 
             isHorizontal = !isHorizontal;
@@ -62,7 +62,7 @@ namespace Battleship.Entity
             }
             else
             {
-                return new Rectangle(base.getBounds().X, base.getBounds().Y, World.tileSize, size * World.tileSize);
+                return new Rectangle(base.getBounds().X, base.getBounds().Y, World.TILE_SIZE, size * World.TILE_SIZE);
             }
         }
 
@@ -97,6 +97,11 @@ namespace Battleship.Entity
         public bool isShipAlive()
         {
             return isAlive;
+        }
+
+        public string getName()
+        {
+            return name;
         }
     }
 }

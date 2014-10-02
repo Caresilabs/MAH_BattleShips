@@ -10,6 +10,9 @@ namespace Battleship.View
 {
     public class HUD
     {
+        private static string dialogText;
+        private static float textTime;
+
         private World world;
         
         public HUD(World world)
@@ -19,41 +22,70 @@ namespace Battleship.View
 
         public void update(float delta)
         {
+            textTime += delta;
 
+            if (textTime > 4)
+            {
+                dialogText = "";
+            }
         }
 
         public void draw(SpriteBatch batch)
         {
-            batch.DrawString(Assets.font, "" + world.getState(), Vector2.Zero, Color.White);
+            batch.DrawString(Assets.font, "Protip:\nUse keys 1-4 to change special attacks", Vector2.Zero, Color.White);
 
             switch (world.getState())
             {
                 case World.State.Player1Init:
-                    batch.DrawString(Assets.font, "Press Space to finish", new Vector2(0, 50), Color.White);
+                    drawCenterString(batch, "Player 1 turn: Place Ships", 30, 1.3f);
+                    drawCenterString(batch, "Press Space when finish", 70);
                     break;
                 case World.State.Player2Init:
+                    drawCenterString(batch, "Player 2 turn: Place Ships", 30, 1.3f);
                     if (world.getMode() == World.Mode.PlayerVSPlayer)
                     {
-                        batch.DrawString(Assets.font, "Press Space to finish", new Vector2(0, 50), Color.White);
+                        drawCenterString(batch, "Press Space when finish", 70);
                     }
                     break;
                 case World.State.Player1Turn:
-                    batch.DrawString(Assets.font, "Press Space to Toggle ships visible", new Vector2(0, 50), Color.White);
+                    drawCenterString(batch, "Player 1 turn", 30, 1.3f);
+                    drawCenterString(batch, "Press Space to Toggle ships visible", 70);
                     break;
                 case World.State.Player2Turn:
+                    drawCenterString(batch, "Player 2 turn", 30, 1.3f);
                     if (world.getMode() == World.Mode.PlayerVSPlayer)
                     {
-                        batch.DrawString(Assets.font, "Press Space to Toggle ships visible", new Vector2(0, 50), Color.White);
+                        drawCenterString(batch, "Press Space to Toggle ships visible", 70);
                     }
                     break;
                 case World.State.Player1Win:
+                    drawCenterString(batch, "Press R for a rematch", 120, 1.0f);
+                    drawCenterString(batch, "Player 1 won!", 70, 1.3f);
                     break;
                 case World.State.Player2Win:
+                    drawCenterString(batch, "Press R for a rematch", 120, 1.0f);
+                    drawCenterString(batch, "Player 2 won!", 70, 1.3f);
                     break;
                 default:
                     break;
             }
-           
+
+            if (dialogText != null)
+                drawCenterString(batch, dialogText, 120);
+        }
+
+        public static void drawCenterString(SpriteBatch batch, string text, float y, float scale = 1)
+        {
+            batch.DrawString(Assets.font, text,
+                    new Vector2(
+                         batch.GraphicsDevice.Viewport.Width / 2 - ((Assets.font.MeasureString(text).Length() / 2) * scale), y),
+                            Color.White, 0, Vector2.Zero, new Vector2(scale, scale), SpriteEffects.None, 0);
+        }
+
+        public static void setDialogText(string text)
+        {
+            dialogText = text;
+            textTime = 0;
         }
     }
 }

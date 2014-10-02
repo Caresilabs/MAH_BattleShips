@@ -39,28 +39,29 @@ namespace Battleship.Entity
         {
             Color color = Color.White;
 
-            batch.Draw(Assets.getItems(), new Rectangle((int)(position.X + x * World.tileSize), (int)(position.Y + y * World.tileSize), World.tileSize, World.tileSize)
+            // Draw background
+            batch.Draw(Assets.getItems(), new Rectangle((int)(position.X + x * World.TILE_SIZE), (int)(position.Y + y * World.TILE_SIZE), World.TILE_SIZE, World.TILE_SIZE)
               , Assets.getRegion("tile"), color, 0, Vector2.Zero, SpriteEffects.None, .5f);
 
-            // Draw action
+            // Draw state
             if (id == TILE_HIT || id == TILE_WATER)
             {
-                batch.Draw(Assets.getItems(), new Rectangle((int)(position.X + x * World.tileSize), (int)(position.Y + y * World.tileSize), World.tileSize, World.tileSize)
+                batch.Draw(Assets.getItems(), new Rectangle((int)(position.X + x * World.TILE_SIZE), (int)(position.Y + y * World.TILE_SIZE), World.TILE_SIZE, World.TILE_SIZE)
               , region, color, 0, Vector2.Zero, SpriteEffects.None, .02f);
+            }
+
+            if (effect == TileEffect.Selected)
+            {
+                batch.Draw(Assets.getItems(), new Rectangle((int)(position.X + x * World.TILE_SIZE), (int)(position.Y + y * World.TILE_SIZE), World.TILE_SIZE, World.TILE_SIZE)
+                , Assets.getRegion("tileSelect"), Color.Blue, 0, Vector2.Zero, SpriteEffects.None, .0f);
             }
 
             // Effects
             if (id >= 0)
             {
-                if (effect == TileEffect.Selected)
-                {
-                    batch.Draw(Assets.getItems(), new Rectangle((int)(position.X + x * World.tileSize), (int)(position.Y + y * World.tileSize), World.tileSize, World.tileSize)
-                    , Assets.getRegion("tileSelect"), Color.White, 0, Vector2.Zero, SpriteEffects.None, .2f);
-                }
-
                 if (effect == TileEffect.BombMark)
                 {
-                    batch.Draw(Assets.getItems(), new Rectangle((int)(position.X + x * World.tileSize), (int)(position.Y + y * World.tileSize), World.tileSize, World.tileSize)
+                    batch.Draw(Assets.getItems(), new Rectangle((int)(position.X + x * World.TILE_SIZE), (int)(position.Y + y * World.TILE_SIZE), World.TILE_SIZE, World.TILE_SIZE)
                     , Assets.getRegion("tileBomb"), Color.White, 0, Vector2.Zero, SpriteEffects.None, .2f);
                 }
             }

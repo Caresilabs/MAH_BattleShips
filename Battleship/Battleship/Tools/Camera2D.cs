@@ -13,18 +13,17 @@ namespace Battleship.Tools
      */
     public class Camera2D
     {
+        private static GraphicsDevice graphicsDevice;
         private static Matrix transform;
 
         private Vector2 position;
         private Vector2 zoom;
-        private GraphicsDevice graphicsDevice;
         private Viewport defaultViewPort;
 
         private float rotation;
 
-        public Camera2D(GraphicsDevice graphicsDevice, Viewport defaultViewPort)
+        public Camera2D(Viewport defaultViewPort)
         {
-            this.graphicsDevice = graphicsDevice;
             this.defaultViewPort = defaultViewPort;
             this.rotation = 0f;
             this.zoom = new Vector2(1, 1);
@@ -95,6 +94,16 @@ namespace Battleship.Tools
         {
             position.X = pos.X;
             position.Y = pos.Y;
+        }
+
+        public static void setGraphics(GraphicsDevice device)
+        {
+            graphicsDevice = device;
+        }
+
+        public static GraphicsDevice getDefaultGraphics()
+        {
+            return graphicsDevice;
         }
     }
 }

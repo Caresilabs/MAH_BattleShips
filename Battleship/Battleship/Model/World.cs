@@ -7,18 +7,19 @@ using Asteroid.Tools;
 using Battleship.Entity;
 using Microsoft.Xna.Framework.Input;
 using Battleship.Tools;
+using Battleship.View;
 
 namespace Battleship.Model
 {
     public class World
     {
         // World size
-        public const float fieldWidth = 500;
-        public const float fieldHeight = 500;
+        public const float FIELD_WIDTH = 500;
+        public const float FIELD_HEIGHT = 500;
 
-        public const int fieldSize = 10;
+        public const int FIELD_SIZE = 10;
 
-        public static int tileSize;
+        public static int TILE_SIZE;
 
         private State state;
         private Mode mode;
@@ -41,10 +42,10 @@ namespace Battleship.Model
             this.mode = mode;
             this.state = State.Player1Init;
 
-            tileSize = (int)fieldWidth / fieldSize;
+            TILE_SIZE = (int)FIELD_WIDTH / FIELD_SIZE;
 
             int y = -170;
-            float x = 640-fieldWidth;
+            float x = 640-FIELD_WIDTH;
             // Init fields
             this.shipFieldLeft = new PlayerShipField(this, -640 +x/2, y);
 
@@ -56,6 +57,8 @@ namespace Battleship.Model
             {
                 this.shipFieldRight = new PlayerShipField(this, x/2, y);
             }
+
+            shipFieldRight.hideShips();
         }
 
         public void update(float delta)
@@ -69,6 +72,10 @@ namespace Battleship.Model
             if (state == State.Player1Init)
             {
                 state = State.Player2Init;
+                if (mode == Mode.PlayerVSPlayer)
+                {
+                    shipFieldRight.showShips();
+                }
             }
             else if (state == State.Player2Init)
             {
@@ -94,7 +101,6 @@ namespace Battleship.Model
                     gameOver();
                 }
             }
-
         }
 
         public void gameOver() {

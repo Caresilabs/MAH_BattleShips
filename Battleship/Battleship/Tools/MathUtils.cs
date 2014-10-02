@@ -28,6 +28,11 @@ namespace Asteroid.Tools
             return rnd.Next(max);
         }
 
+        public static int random(int min, int max)
+        {
+            return min + rnd.Next(max - min + 1);
+        }
+
         // todo
         public static float atan(float degree)
         {

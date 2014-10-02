@@ -41,6 +41,8 @@ namespace Battleship
             loadRegion("ship3", 0, 0, 150, 50);
             loadRegion("ship2", 0, 0, 100, 50);
 
+            loadRegion("pixel", 249, 249, 1, 1);
+
             // Load font 
             font = manager.Load<SpriteFont>("Font/font");
         }
