@@ -49,7 +49,7 @@ namespace Battleship.Managers
                 // Draw hover
                 field.hover(mouseWorld.X, mouseWorld.Y);
 
-                // Hover attacks
+                // Hover effects
                 if (targetField != null)
                 {
                     if (field.getSelectedAttack() == "Normal Strike")

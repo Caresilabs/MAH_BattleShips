@@ -60,6 +60,7 @@ namespace Battleship.View
         private void drawBackground(SpriteBatch batch)
         {
            // batch.Draw(Assets.getItems(), new Rectangle(0,0,400,400), bg, Color.White, 0, Vector2.Zero, SpriteEffects.None, 1);
+            //TODO
         }
 
         public Camera2D getCamera()

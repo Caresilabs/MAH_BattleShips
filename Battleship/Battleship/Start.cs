@@ -35,6 +35,8 @@ namespace Battleship
 
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
+            // Todo resize bug
+
             aspectRatio = graphics.PreferredBackBufferWidth / (float)graphics.PreferredBackBufferHeight;
 
             IsMouseVisible = true;
