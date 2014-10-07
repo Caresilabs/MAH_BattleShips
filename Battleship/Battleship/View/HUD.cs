@@ -60,18 +60,18 @@ namespace Battleship.View
                     break;
                 case World.State.Player1Win:
                     drawCenterString(batch, "Press R for a rematch", 120, .5f);
-                    drawCenterString(batch, "Player 1 won!", 70, .6f);
+                    drawCenterString(batch, "Player 1 won!", 60, .8f);
                     break;
                 case World.State.Player2Win:
                     drawCenterString(batch, "Press R for a rematch", 120, .5f);
-                    drawCenterString(batch, "Player 2 won!", 70, .6f);
+                    drawCenterString(batch, "Player 2 won!", 60, .8f);
                     break;
                 default:
                     break;
             }
 
             if (dialogText != null)
-                drawCenterString(batch, dialogText, 120, Color.Red, 0.5f);
+                drawCenterString(batch, dialogText, 110, Color.Red, 0.65f);
         }
 
         public static void drawCenterString(SpriteBatch batch, string text, float y, Color color, float scale = 1)

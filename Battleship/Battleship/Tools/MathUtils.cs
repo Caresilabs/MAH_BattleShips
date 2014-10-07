@@ -30,7 +30,12 @@ namespace Asteroid.Tools
 
         public static int random(int min, int max)
         {
-            return min + rnd.Next(max - min + 1);
+            return min + rnd.Next(0, max - min + 1);
+        }
+
+        public static bool randomBool()
+        {
+            return rnd.Next(2) == 1 ? true : false;
         }
 
         // todo

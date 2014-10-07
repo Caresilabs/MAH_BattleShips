@@ -119,8 +119,21 @@ namespace Battleship.Entity
             }
 
             // Draw shoots
-            Vector2 textPos = new Vector2(position.X + bounds.Width/2 - 50, position.Y + bounds.Height + 2);
-            batch.DrawString(Assets.font, "Hits: " + hits, textPos, Color.White, 0, Vector2.Zero, .5f, SpriteEffects.None, 0);
+            Vector2 textPos = new Vector2(position.X + bounds.Width/2 - 20, position.Y - 50);
+            batch.DrawString(Assets.font, "Hits: " + hits, textPos, Color.Red, 0, Vector2.Zero, .5f, SpriteEffects.None, 0);
+
+
+            // Draw attacks left
+            string attackString = "Attacks left: ";
+            foreach (var item in attacks)
+            {
+                if (item.Value == false) continue;
+                attackString += " " + item.Key + ",";
+            }
+            attackString = attackString.Substring(0, attackString.Length - 1);
+
+            textPos = new Vector2(position.X + 10, position.Y + bounds.Height + 2);
+            batch.DrawString(Assets.font, attackString, textPos, Color.White, 0, Vector2.Zero, .39f, SpriteEffects.None, 0);
         }
 
         // Return true if hit was done correctly
@@ -370,6 +383,11 @@ namespace Battleship.Entity
         public World getWorld()
         {
             return world;
+        }
+
+        public Dictionary<int, Ship> getShips()
+        {
+            return ships;
         }
 
         public Dictionary<string, bool> getAttacks()

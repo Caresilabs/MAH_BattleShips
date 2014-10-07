@@ -99,6 +99,9 @@ namespace Battleship.Controller
             // Restart
             if (Keyboard.GetState().IsKeyDown(Keys.R))
                 setScreen(new GameScreen(mode));
+
+            if (Keyboard.GetState().IsKeyDown(Keys.M))
+                setScreen(new MainMenuScreen());
         }
 
         private void updateConfetti(float delta)

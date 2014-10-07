@@ -143,6 +143,12 @@ namespace Battleship.Managers
 
                     showingShips = !showingShips;
                 }
+
+                // cheat
+                if (wasClicked(Keys.Back))
+                {
+                    targetField.showShips();
+                }
             }
 
             oldKeyState = Keyboard.GetState();

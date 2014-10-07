@@ -17,13 +17,10 @@ namespace Battleship
     {
         public const string GAME_NAME = "Battle of Great Sea Uhyaa";
 
-        private GraphicsDeviceManager graphics;
+        private static GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
         private Screen currentScreen;
-
-        private Rectangle mouseTex;
-        private Vector2 mousePosition;
 
         private float aspectRatio;
 
@@ -60,10 +57,6 @@ namespace Battleship
             Assets.load(Content);
             Camera2D.setGraphics(GraphicsDevice);
 
-            // Load mouse
-            this.mouseTex = Assets.getRegion("tile");
-            this.mousePosition = new Vector2();
-
             // init startup screen
             setScreen(getStartScreen());
         }
@@ -83,10 +76,6 @@ namespace Battleship
             // get second between last frame and current frame, used for fair physics manipulation and not based on frames
             float delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            //update mouse
-            mousePosition.X = Mouse.GetState().X - mouseTex.Width / 2;
-            mousePosition.Y = Mouse.GetState().Y - mouseTex.Height / 2;
-
             // then update the screen
             currentScreen.update(delta);
 
@@ -100,9 +89,6 @@ namespace Battleship
             // Draw screen
             currentScreen.draw(spriteBatch);
 
-            // spriteBatch.Begin();
-            // spriteBatch.Draw(Assets.getItems(), mousePosition, mouseTex , Color.White);
-            // spriteBatch.End();
             base.Draw(gameTime);
         }
 
@@ -130,6 +116,13 @@ namespace Battleship
 
             graphics.PreferredBackBufferWidth = new_width;
             graphics.PreferredBackBufferHeight = (int)(new_width / aspectRatio);
+            graphics.ApplyChanges();
+        }
+
+        public static void changeResolution(int width, int height)
+        {
+            graphics.PreferredBackBufferWidth = width;
+            graphics.PreferredBackBufferHeight = height;
             graphics.ApplyChanges();
         }
 

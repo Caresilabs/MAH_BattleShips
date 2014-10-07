@@ -76,10 +76,12 @@ namespace Battleship.Model
                 {
                     shipFieldRight.showShips();
                 }
+                HUD.setDialogText("Player 1 finished placing boats");
             }
             else if (state == State.Player2Init)
             {
                 state = State.Player1Turn;
+                HUD.setDialogText("Player 2 finished placing boats");
             }
 
             // Turn Loop

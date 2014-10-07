@@ -17,30 +17,54 @@ namespace Battleship.Controller
 
         private Camera2D camera;
         private List<MenuButton> buttons;
+        private MenuButton resolutionButton;
+        private MouseState oldMouseState;
+        private int currentRes;
+
+        private Vector2[] resolutions = new Vector2[]{ 
+            new Vector2(1280, 720),
+           
+            new Vector2(1024, 768),
+            new Vector2(960, 640),
+        };
 
         public override void init()
         {
             this.buttons = new List<MenuButton>();
             this.camera = new Camera2D(1280, 720);
+            this.currentRes = 0;
 
-            MenuButton startPVP = new MenuButton(this, "startButtonPVP", "Start P V. P", 0, -50, 1.3f);
+            MenuButton startPVP = new MenuButton(this, "startButtonPVP", "Start VS Player", 0, -50, 1.3f);
             buttons.Add(startPVP);
 
-            MenuButton startPVE = new MenuButton(this, "startButtonPVE", "Start P V. AI", 0, 70, 1.3f);
+            MenuButton startPVE = new MenuButton(this, "startButtonPVE", "Start VS AI", 0, 70, 1.3f);
             buttons.Add(startPVE);
+
+            resolutionButton = new MenuButton(this, "resolution", resolutions[currentRes].X + "x" + resolutions[currentRes].Y, 0, 190, 1.3f);
+            buttons.Add(resolutionButton);
         }
 
         public override void update(float delta)
         {
             camera.update(delta);
 
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            if (wasClicked())
             {
                 foreach (var item in buttons)
                 {
                     item.touchDown(Mouse.GetState().X, Mouse.GetState().Y);
                 }
             }
+
+            oldMouseState = Mouse.GetState();
+        }
+
+        public bool wasClicked()
+        {
+            if (Mouse.GetState().LeftButton == ButtonState.Released && oldMouseState.LeftButton == ButtonState.Pressed)
+                return true;
+            else
+                return false;
         }
 
         public override void draw(SpriteBatch batch)
@@ -61,9 +85,7 @@ namespace Battleship.Controller
                 item.draw(batch);
             }
 
-            drawCenterString(batch, Start.GAME_NAME, -200, Color.Red, 1.9f);
-
-            //            HUD.drawCenterString(batch, "Exit", 350, 1.4f);
+            drawCenterString(batch, Start.GAME_NAME, -240, Color.Red, 1.9f);
 
             batch.End();
         }
@@ -98,6 +120,16 @@ namespace Battleship.Controller
             else if (name == "exitButton")
             {
                 getGame().Exit();
+            }
+            else if (name == "resolution")
+            {
+                currentRes++;
+                if (currentRes >= resolutions.Count())
+                    currentRes = 0;
+
+                resolutionButton.setText(resolutions[currentRes].X + "x" + resolutions[currentRes].Y);
+
+                Start.changeResolution((int)resolutions[currentRes].X, (int)resolutions[currentRes].Y);
             }
         }
     }
