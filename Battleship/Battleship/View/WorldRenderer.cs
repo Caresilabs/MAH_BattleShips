@@ -20,10 +20,10 @@ namespace Battleship.View
 
         private Rectangle bg;
 
-        public WorldRenderer(Viewport defaultViewport, World world)
+        public WorldRenderer(World world)
         {
             this.world = world;
-            this.camera = new Camera2D(defaultViewport);
+            this.camera = new Camera2D(1280, 720);
 
             this.bg = Assets.getRegion("tile");
         }

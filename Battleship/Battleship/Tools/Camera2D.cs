@@ -18,13 +18,13 @@ namespace Battleship.Tools
 
         private Vector2 position;
         private Vector2 zoom;
-        private Viewport defaultViewPort;
+        private Vector2 defaultViewPort;
 
         private float rotation;
 
-        public Camera2D(Viewport defaultViewPort)
+        public Camera2D(float width, float height)
         {
-            this.defaultViewPort = defaultViewPort;
+            this.defaultViewPort = new Vector2(width, height);
             this.rotation = 0f;
             this.zoom = new Vector2(1, 1);
             this.position = Vector2.Zero;
@@ -32,8 +32,8 @@ namespace Battleship.Tools
 
         public void update(float delta)
         {
-            zoom.X = graphicsDevice.Viewport.Width / (float)defaultViewPort.Width;
-            zoom.Y = graphicsDevice.Viewport.Height / (float)defaultViewPort.Height;
+            zoom.X = graphicsDevice.Viewport.Width / (float)defaultViewPort.X;
+            zoom.Y = graphicsDevice.Viewport.Height / (float)defaultViewPort.Y;
         }
 
         // Gets the matrix used by the spritebatch

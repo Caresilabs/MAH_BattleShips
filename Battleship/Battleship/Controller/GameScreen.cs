@@ -24,14 +24,19 @@ namespace Battleship.Controller
         private WorldRenderer renderer;
         private InputManager input;
         private HUD hud;
-
+        private World.Mode mode;
         private float stateTime;
+
+        public GameScreen(World.Mode mode)
+        {
+            this.mode = mode;
+        }
 
         public override void init()
         {
             this.confettis = new List<Confetti>();
-            this.world = new World(World.Mode.PlayerVSPlayer);
-            this.renderer = new WorldRenderer(getDefaultViewPort(), world);
+            this.world = new World(mode);
+            this.renderer = new WorldRenderer(world);
             this.input = new InputManager(world);
             this.hud = new HUD(world);
         }
@@ -93,7 +98,7 @@ namespace Battleship.Controller
 
             // Restart
             if (Keyboard.GetState().IsKeyDown(Keys.R))
-                setScreen(new GameScreen());
+                setScreen(new GameScreen(mode));
         }
 
         private void updateConfetti(float delta)

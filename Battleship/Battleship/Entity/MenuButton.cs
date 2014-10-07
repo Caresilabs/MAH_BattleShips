@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Battleship.Tools;
 
 namespace Battleship.Entity
 {
@@ -27,11 +28,13 @@ namespace Battleship.Entity
             this.name = name;
             this.scale = scale;
             this.bounds = new Rectangle((int)x - (int)(Assets.font.MeasureString(text).Length()/2 * scale), (int)y, (int)Assets.font.MeasureString(text).Length(), (int)Assets.font.MeasureString(text).Y);
+
         }
 
         public void touchDown(float x, float y)
         {
-            if (bounds.Contains((int)x, (int)y))
+            Vector2 un = Camera2D.unproject(x, y);
+            if (bounds.Contains((int)un.X, (int)un.Y))
             {
                 listener.touchDown(name);
             }
@@ -39,6 +42,7 @@ namespace Battleship.Entity
 
         public void draw(SpriteBatch batch)
         {
+            batch.Draw(Assets.getItems(), bounds, Assets.getRegion("tileSelect"), Color.White);
             batch.DrawString(Assets.font, text, new Vector2(bounds.X, bounds.Y), Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
         }
     }

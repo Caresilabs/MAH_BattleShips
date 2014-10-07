@@ -100,10 +100,10 @@ namespace Battleship.Entity
             {
                 // Draw Columns and Rows
                 Vector2 pos = new Vector2(position.X + i * World.TILE_SIZE + World.TILE_SIZE / 3, position.Y - 25);
-                batch.DrawString(Assets.font, IndexToColumn(i + 1), pos, Color.White);
+                batch.DrawString(Assets.font, IndexToColumn(i + 1), pos, Color.White, 0, Vector2.Zero, .5f, SpriteEffects.None, 0);
 
                 pos = new Vector2(position.X - 25, position.Y + i * World.TILE_SIZE + World.TILE_SIZE / 3);
-                batch.DrawString(Assets.font, (i + 1).ToString(), pos, Color.White);
+                batch.DrawString(Assets.font, (i + 1).ToString(), pos, Color.White, 0, Vector2.Zero, .5f, SpriteEffects.None, 0);
 
                 // Draw tiles
                 for (int j = 0; j < World.FIELD_SIZE; j++)
@@ -120,7 +120,7 @@ namespace Battleship.Entity
 
             // Draw shoots
             Vector2 textPos = new Vector2(position.X + bounds.Width/2 - 50, position.Y + bounds.Height + 2);
-            batch.DrawString(Assets.font, "Hits: " + hits, textPos, Color.White);
+            batch.DrawString(Assets.font, "Hits: " + hits, textPos, Color.White, 0, Vector2.Zero, .5f, SpriteEffects.None, 0);
         }
 
         // Return true if hit was done correctly

@@ -32,46 +32,46 @@ namespace Battleship.View
 
         public void draw(SpriteBatch batch)
         {
-            batch.DrawString(Assets.font, "Protip:\nUse keys 1-4 to change special attacks", Vector2.Zero, Color.White);
+            batch.DrawString(Assets.font, "Protip:\nUse keys 1-4 to change special attacks", Vector2.Zero, Color.White, 0, Vector2.Zero, .5f, SpriteEffects.None, 0);
 
             switch (world.getState())
             {
                 case World.State.Player1Init:
-                    drawCenterString(batch, "Player 1 turn: Place Ships", 30, 1.3f);
-                    drawCenterString(batch, "Press Space when finish", 70);
+                    drawCenterString(batch, "Player 1 turn: Place Ships", 30, .6f);
+                    drawCenterString(batch, "Press Space when finish", 70, .5f);
                     break;
                 case World.State.Player2Init:
-                    drawCenterString(batch, "Player 2 turn: Place Ships", 30, 1.3f);
+                    drawCenterString(batch, "Player 2 turn: Place Ships", 30, .6f);
                     if (world.getMode() == World.Mode.PlayerVSPlayer)
                     {
-                        drawCenterString(batch, "Press Space when finish", 70);
+                        drawCenterString(batch, "Press Space when finish", 70, .5f);
                     }
                     break;
                 case World.State.Player1Turn:
-                    drawCenterString(batch, "Player 1 turn", 30, 1.3f);
-                    drawCenterString(batch, "Press Space to Toggle ships visible", 70);
+                    drawCenterString(batch, "Player 1 turn", 30, .6f);
+                    drawCenterString(batch, "Press Space to Toggle ships visible", 70, .5f);
                     break;
                 case World.State.Player2Turn:
-                    drawCenterString(batch, "Player 2 turn", 30, 1.3f);
+                    drawCenterString(batch, "Player 2 turn", 30,  .6f);;
                     if (world.getMode() == World.Mode.PlayerVSPlayer)
                     {
-                        drawCenterString(batch, "Press Space to Toggle ships visible", 70);
+                        drawCenterString(batch, "Press Space to Toggle ships visible", 70, .5f);
                     }
                     break;
                 case World.State.Player1Win:
-                    drawCenterString(batch, "Press R for a rematch", 120, 1.0f);
-                    drawCenterString(batch, "Player 1 won!", 70, 1.3f);
+                    drawCenterString(batch, "Press R for a rematch", 120, .5f);
+                    drawCenterString(batch, "Player 1 won!", 70, .6f);
                     break;
                 case World.State.Player2Win:
-                    drawCenterString(batch, "Press R for a rematch", 120, 1.0f);
-                    drawCenterString(batch, "Player 2 won!", 70, 1.3f);
+                    drawCenterString(batch, "Press R for a rematch", 120, .5f);
+                    drawCenterString(batch, "Player 2 won!", 70, .6f);
                     break;
                 default:
                     break;
             }
 
             if (dialogText != null)
-                drawCenterString(batch, dialogText, 120, Color.Red);
+                drawCenterString(batch, dialogText, 120, Color.Red, 0.5f);
         }
 
         public static void drawCenterString(SpriteBatch batch, string text, float y, Color color, float scale = 1)

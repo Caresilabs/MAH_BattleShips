@@ -37,9 +37,9 @@ namespace Battleship
             
             // ship regions
             loadRegion("ship5", 0, 0, 250, 50);
-            loadRegion("ship4", 0, 0, 200, 50);
-            loadRegion("ship3", 0, 0, 150, 50);
-            loadRegion("ship2", 0, 0, 100, 50);
+            loadRegion("ship4", 0, 50, 200, 50);
+            loadRegion("ship3", 0, 100, 150, 50);
+            loadRegion("ship2", 0, 200, 100, 50);
 
             loadRegion("pixel", 249, 249, 1, 1);
 
