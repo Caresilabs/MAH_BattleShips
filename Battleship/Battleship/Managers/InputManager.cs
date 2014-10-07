@@ -215,9 +215,9 @@ namespace Battleship.Managers
 
         private void nextTurn(ShipField field)
         {
+            field.hideShips();
             world.nextTurn();
             showingShips = false;
-            field.hideShips();
         }
 
         public bool wasClicked(Keys key)
