@@ -17,14 +17,12 @@ namespace Battleship.View
     {
         private World world;
         private Camera2D camera;
-
         private Rectangle bg;
 
         public WorldRenderer(World world)
         {
             this.world = world;
             this.camera = new Camera2D(1280, 720);
-
             this.bg = Assets.getRegion("tile");
         }
 

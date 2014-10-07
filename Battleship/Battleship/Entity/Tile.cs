@@ -23,7 +23,7 @@ namespace Battleship.Entity
 
         public enum TileEffect
         {
-            Selected, BombMark ,None
+            Selected, BombMark, None
         }
 
         public Tile(int x, int y)
@@ -37,17 +37,15 @@ namespace Battleship.Entity
 
         public void draw(SpriteBatch batch, Vector2 position)
         {
-            Color color = Color.White;
-
             // Draw background
             batch.Draw(Assets.getItems(), new Rectangle((int)(position.X + x * World.TILE_SIZE), (int)(position.Y + y * World.TILE_SIZE), World.TILE_SIZE, World.TILE_SIZE)
-              , Assets.getRegion("tile"), color, 0, Vector2.Zero, SpriteEffects.None, .5f);
+              , Assets.getRegion("tile"), Color.White, 0, Vector2.Zero, SpriteEffects.None, .5f);
 
             // Draw state
             if (id == TILE_HIT || id == TILE_WATER)
             {
                 batch.Draw(Assets.getItems(), new Rectangle((int)(position.X + x * World.TILE_SIZE), (int)(position.Y + y * World.TILE_SIZE), World.TILE_SIZE, World.TILE_SIZE)
-              , region, color, 0, Vector2.Zero, SpriteEffects.None, .02f);
+              , region, Color.White, 0, Vector2.Zero, SpriteEffects.None, .02f);
             }
 
             if (effect == TileEffect.Selected)
@@ -74,7 +72,9 @@ namespace Battleship.Entity
             if (id > 0)
             {
                 setId(TILE_HIT);
-            } else {
+            }
+            else
+            {
                 setId(TILE_WATER);
             }
             return true;
@@ -92,7 +92,7 @@ namespace Battleship.Entity
             else if (id == TILE_HIT)
             {
                 region = Assets.getRegion("tileHit");
-            } 
+            }
         }
 
         public int getId()

@@ -11,7 +11,7 @@ namespace Battleship.Entity
         public PlayerShipField(World world, float x, float y)
             : base(world, x, y)
         {
-
+            // Do player specific stuff in future release
         } 
     }
 }

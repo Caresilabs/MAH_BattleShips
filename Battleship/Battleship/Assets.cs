@@ -31,8 +31,6 @@ namespace Battleship
             loadRegion("tileSelect", 200, 200, 50, 50);
             loadRegion("tileWater", 200, 50, 50, 50);
             loadRegion("tileHit", 150, 150, 50, 50);
-
-            // effects
             loadRegion("tileBomb", 150, 200, 50, 50);
             
             // ship regions
@@ -41,6 +39,7 @@ namespace Battleship
             loadRegion("ship3", 0, 100, 150, 50);
             loadRegion("ship2", 0, 200, 100, 50);
 
+            // others
             loadRegion("button", 150, 100, 100, 50);
             loadRegion("pixel", 249, 249, 1, 1);
 

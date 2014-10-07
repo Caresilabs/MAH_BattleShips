@@ -16,14 +16,12 @@ namespace Battleship.Model
         // World size
         public const float FIELD_WIDTH = 500;
         public const float FIELD_HEIGHT = 500;
-
         public const int FIELD_SIZE = 10;
 
         public static int TILE_SIZE;
 
         private State state;
         private Mode mode;
-
         private ShipField shipFieldLeft;
         private ShipField shipFieldRight;
 
@@ -39,23 +37,28 @@ namespace Battleship.Model
 
         public World(Mode mode)
         {
-            this.mode = mode;
-            this.state = State.Player1Init;
-
             TILE_SIZE = (int)FIELD_WIDTH / FIELD_SIZE;
 
+            this.mode = mode;
+            this.state = State.Player1Init;
+            this.initFields();
+        }
+
+        private void initFields()
+        {
             int y = -170;
-            float x = 640-FIELD_WIDTH;
+            float x = 640 - FIELD_WIDTH;
+
             // Init fields
-            this.shipFieldLeft = new PlayerShipField(this, -640 +x/2, y);
+            this.shipFieldLeft = new PlayerShipField(this, -640 + x / 2, y);
 
             if (mode == Mode.PlayerVSAI)
             {
-                this.shipFieldRight = new AIShipField(this, x/2, y);
+                this.shipFieldRight = new AIShipField(this, x / 2, y);
             }
             else
             {
-                this.shipFieldRight = new PlayerShipField(this, x/2, y);
+                this.shipFieldRight = new PlayerShipField(this, x / 2, y);
             }
 
             shipFieldRight.hideShips();

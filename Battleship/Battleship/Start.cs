@@ -27,22 +27,17 @@ namespace Battleship
         public Start()
         {
             graphics = new GraphicsDeviceManager(this);
-
             Content.RootDirectory = "Content";
 
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
-            // Todo resize bug
 
             aspectRatio = graphics.PreferredBackBufferWidth / (float)graphics.PreferredBackBufferHeight;
 
             IsMouseVisible = true;
             Window.AllowUserResizing = true;
-            // graphics.ToggleFullScreen();
             Window.Title = GAME_NAME + " by [Simon Bothen]"; //  set title to our game name
             Window.ClientSizeChanged += new EventHandler<EventArgs>(WindowSizeChanged);
-
-            
         }
 
         protected override void Initialize()
@@ -63,13 +58,11 @@ namespace Battleship
 
         protected override void UnloadContent()
         {
-            // Unload any non ContentManager content here
             Assets.unload();
         }
 
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
 
@@ -92,7 +85,7 @@ namespace Battleship
             base.Draw(gameTime);
         }
 
-        internal void setScreen(Screen newScreen)
+        public void setScreen(Screen newScreen)
         {
             if (newScreen == null) return;
 

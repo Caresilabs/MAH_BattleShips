@@ -33,7 +33,11 @@ namespace Battleship.Controller
             this.buttons = new List<MenuButton>();
             this.camera = new Camera2D(1280, 720);
             this.currentRes = 0;
+            initButtons();
+        }
 
+        private void initButtons()
+        {
             MenuButton startPVP = new MenuButton(this, "startButtonPVP", "Start VS Player", 0, -50, 1.3f);
             buttons.Add(startPVP);
 

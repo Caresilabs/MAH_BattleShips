@@ -27,8 +27,7 @@ namespace Battleship.Entity
             this.isVisible = true;
             this.isAlive = true;
             this.grabPosition = new Vector2();
-
-            setZIndex(.05f);
+            this.setZIndex(.05f);
         }
 
         public override void draw(SpriteBatch batch)

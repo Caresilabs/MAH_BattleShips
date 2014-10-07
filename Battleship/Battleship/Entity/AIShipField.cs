@@ -15,7 +15,7 @@ namespace Battleship.Entity
 
         private float time;
         private Point? lastHit;
-        List<Point> unfinishedShips = new List<Point>();
+        private List<Point> unfinishedShips = new List<Point>();
 
         public AIShipField(World world, float x, float y)
             : base(world, x, y)
@@ -170,17 +170,18 @@ namespace Battleship.Entity
             foreach (var item in getShips())
             {
                 Ship ship = item.Value;
-               
+
                 int loops = 0;
-                while(loops < 400) {
-                    loops ++;
+                while (loops < 400)
+                {
+                    loops++;
                     // Arrangement
                     if (MathUtils.randomBool())
                     {
                         rotateShip(ship);
                     }
 
-                    int x = MathUtils.random(getBounds().X + 10,getBounds().X + getBounds().Width - ship.getBounds().Width - 10);
+                    int x = MathUtils.random(getBounds().X + 10, getBounds().X + getBounds().Width - ship.getBounds().Width - 10);
                     int y = MathUtils.random(getBounds().Y + 10, getBounds().Y + getBounds().Height - ship.getBounds().Height - 10);
                     ship.setPosition(x, y);
                     placeShip(ship);
@@ -189,7 +190,8 @@ namespace Battleship.Entity
                     bool collided = false;
                     foreach (var col in getShips())
                     {
-                        if (col.Value.getBounds().Intersects(ship.getBounds()) && col.Value != ship){
+                        if (col.Value.getBounds().Intersects(ship.getBounds()) && col.Value != ship)
+                        {
                             collided = true;
                             break;
                         }

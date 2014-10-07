@@ -56,9 +56,8 @@ namespace Battleship.Entity
             this.bounds = new Rectangle((int)x, (int)y, World.FIELD_SIZE * World.TILE_SIZE, World.FIELD_SIZE * World.TILE_SIZE);
             this.isAlive = true;
             this.selectedAttack = attacks.Keys.ToArray()[0];
-
-            initFields();
-            addDefaultShips();
+            this.initFields();
+            this.addDefaultShips();
         }
 
         private void initFields()
