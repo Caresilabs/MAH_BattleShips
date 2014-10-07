@@ -44,7 +44,7 @@ namespace Battleship.Managers
             }
             else if (world.getState() == World.State.Player1Turn || world.getState() == World.State.Player2Turn)
             {
-                updateTurn(targetField, targetField);
+                updateTurn(field, targetField);
             }
 
             oldKeyState = Keyboard.GetState();
@@ -221,6 +221,15 @@ namespace Battleship.Managers
                 field.attachShips();
                 nextTurn(field);
             }
+        }
+
+        public void updateHover(ShipField field)
+        {
+            mouse.X = Mouse.GetState().X;
+            mouse.Y = Mouse.GetState().Y;
+
+            mouseWorld = Camera2D.unproject(mouse.X, mouse.Y);
+            field.hover(mouseWorld.X, mouseWorld.Y);
         }
 
         private void nextTurn(ShipField field)

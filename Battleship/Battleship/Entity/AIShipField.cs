@@ -29,7 +29,7 @@ namespace Battleship.Entity
 
             if (getWorld().getState() == World.State.Player2Init)
             {
-                if (time > 1.6f)
+                if (time > 1.4f)
                 {
                     placeShips();
                     nextTurn();
@@ -37,7 +37,7 @@ namespace Battleship.Entity
             }
             else if (getWorld().getState() == World.State.Player2Turn)
             {
-                if (time > .1f)
+                if (time > 1.22f)
                 {
                     shootRandomTile(target);
                     updateUnfinishedShips(target);

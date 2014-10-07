@@ -99,6 +99,7 @@
     <Content Include="GameThumbnail.png">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
     </Content>
+    <Content Include="Content Licences.txt" />
     <Content Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>

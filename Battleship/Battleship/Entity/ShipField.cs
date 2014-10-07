@@ -145,6 +145,14 @@ namespace Battleship.Entity
                 if (tile.hit())
                 {
                     hits++;
+                    if (tile.getId() == Tile.TILE_HIT)
+                    {
+                        Assets.bombSound.Play(.45f, 0, 0);
+                    }
+                    else
+                    {
+                        Assets.missSound.Play(.3f, 0, 0);
+                    }
 
                     // Check if all parts is down
                     if (getAliveShipParts(tileId) == 0)

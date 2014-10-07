@@ -1,0 +1,8 @@
+﻿Music:
+http://mediasample.mediamusicnow.com/pawel-blaszczak/epic_battle__pawel_blaszczak__preview.mp3
+
+Bomb Sound:
+http://media.io/x-accel-download/Mortar%20Round-SoundBible.com-1560834884.wav?26b25890-4e50-11e4-826e-448a5b670d81
+
+Miss sound:
+http://soundbible.com/1232-Water-Drop-Sound-High.html

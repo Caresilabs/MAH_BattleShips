@@ -64,6 +64,7 @@ namespace Battleship.Controller
                     }
                     else
                     {
+                        input.updateHover(world.getCurrentField());
                         ((AIShipField)world.getCurrentField()).updateAI(delta, world.getTargetField());
                     }
                     break;
@@ -78,6 +79,7 @@ namespace Battleship.Controller
                     else
                     {
                         ((AIShipField)world.getCurrentField()).updateAI(delta, world.getTargetField());
+                        input.updateHover(world.getCurrentField());
                     }
                     break;
                 case World.State.Player1Win:

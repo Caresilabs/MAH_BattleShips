@@ -55,8 +55,9 @@ namespace Battleship.View
                     drawCenterString(batch, "Player 2 turn", 30,  .6f);;
                     if (world.getMode() == World.Mode.PlayerVSPlayer)
                     {
-                        drawCenterString(batch, "Press Space to Toggle ships visible", 70, .5f);
+                       
                     }
+                    drawCenterString(batch, "Press Space to Toggle ships visible", 70, .5f);
                     break;
                 case World.State.Player1Win:
                     drawCenterString(batch, "Press R for a rematch", 120, .5f);

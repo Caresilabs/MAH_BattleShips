@@ -5,6 +5,8 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace Battleship
 {
@@ -18,6 +20,10 @@ namespace Battleship
         private static Texture2D items;
 
         public static SpriteFont font;
+
+        public static SoundEffect bombSound;
+        public static SoundEffect missSound;
+        public static Song music;
 
         public static void load(ContentManager manager) {
             Assets.manager = manager;
@@ -45,6 +51,15 @@ namespace Battleship
 
             // Load font 
             font = manager.Load<SpriteFont>("Font/font");
+
+            // load sound
+            bombSound = manager.Load<SoundEffect>("Audio/bomb");
+            missSound = manager.Load<SoundEffect>("Audio/miss");
+
+            music = manager.Load<Song>("Audio/music");
+            MediaPlayer.Volume = .2f;
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(music);
         }
 
         private static void loadRegion(string name, int x, int y, int width, int height) {
