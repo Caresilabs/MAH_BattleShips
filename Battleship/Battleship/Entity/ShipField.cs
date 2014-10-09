@@ -96,6 +96,8 @@ namespace Battleship.Entity
             {
                 item.Value.update(delta);
             }
+
+            shootManager.updateParticles(delta);
         }
 
         public bool updateShoots(float delta, ShipField target)

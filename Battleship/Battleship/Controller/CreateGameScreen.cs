@@ -34,8 +34,8 @@ namespace Battleship.Controller
         private List<MenuButton> buttons;
         private MouseState oldMouseState;
         private World.Mode mode;
-        MenuButton countButton;
-        MenuButton sizeButton;
+        private MenuButton countButton;
+        private MenuButton sizeButton;
 
         private int gridSizeId;
         private int shipCountId;
@@ -50,7 +50,7 @@ namespace Battleship.Controller
             this.buttons = new List<MenuButton>();
             this.camera = new Camera2D(1280, 720);
             this.shipCountId = 2;
-            this.gridSizeId = 1;
+            this.gridSizeId = 0;
             initButtons();
         }
 
@@ -91,6 +91,9 @@ namespace Battleship.Controller
                     item.touchUp();
                 }
             }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.M))
+                setScreen(new MainMenuScreen());
 
             oldMouseState = Mouse.GetState();
         }

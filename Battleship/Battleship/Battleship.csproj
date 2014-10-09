@@ -78,7 +78,7 @@
     <Compile Include="Controller\MainMenuScreen.cs" />
     <Compile Include="Entity\AIShipField.cs" />
     <Compile Include="Entity\Missile.cs" />
-    <Compile Include="Entity\Confetti.cs" />
+    <Compile Include="Entity\Particle.cs" />
     <Compile Include="Entity\Entity.cs" />
     <Compile Include="Entity\MenuButton.cs" />
     <Compile Include="Entity\PlayerShipField.cs" />

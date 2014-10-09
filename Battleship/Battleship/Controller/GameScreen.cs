@@ -18,7 +18,7 @@ namespace Battleship.Controller
      */
     public class GameScreen : Screen
     {
-        private List<Confetti> confettis;
+        private List<Particle> confettis;
 
         private World world;
         private WorldRenderer renderer;
@@ -34,7 +34,7 @@ namespace Battleship.Controller
 
         public override void init()
         {
-            this.confettis = new List<Confetti>();
+            this.confettis = new List<Particle>();
             this.world = new World(mode);
             this.renderer = new WorldRenderer(world);
             this.input = new InputManager(world);
@@ -110,7 +110,7 @@ namespace Battleship.Controller
         {
             for (int i = 0; i < confettis.Count; i++)
 			{
-                Confetti confetti = confettis[i];
+                Particle confetti = confettis[i];
 			    confetti.update(delta);
                 if (confetti.getPosition().Y > getGraphics().Viewport.Height)
                 {
@@ -121,7 +121,7 @@ namespace Battleship.Controller
 
         public void spawnConfetti()
         {
-            Confetti confetti = new Confetti(MathUtils.random(getGraphics().Viewport.Width), -Confetti.SIZE);
+            Particle confetti = new Particle(MathUtils.random(getGraphics().Viewport.Width), -Particle.SIZE_DEFAULT, MathUtils.random(-300f, 300f), MathUtils.random(200f, 600f));
             confettis.Add(confetti);
         }
 

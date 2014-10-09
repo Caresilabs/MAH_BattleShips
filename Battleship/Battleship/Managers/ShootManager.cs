@@ -1,4 +1,5 @@
-﻿using Battleship.Entity;
+﻿using Asteroid.Tools;
+using Battleship.Entity;
 using Battleship.Model;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,6 +14,7 @@ namespace Battleship.Managers
     {
         private List<Missile> bombs;
         private List<Point> bombPositions;
+        private List<Particle> particles;
         private ShipField field;
         private bool isShooting;
 
@@ -21,6 +23,7 @@ namespace Battleship.Managers
             this.isShooting = false;
             this.bombs = new List<Missile>();
             this.bombPositions = new List<Point>();
+            this.particles = new List<Particle>();
             this.field = field;
         }
 
@@ -48,11 +51,29 @@ namespace Battleship.Managers
                 return true;
         }
 
+        public void updateParticles(float delta)
+        {
+            for (int i = 0; i < particles.Count; i++)
+            {
+                Particle particle = particles[i];
+                particle.update(delta);
+                if (particle.getPosition().Y > 720 || !particle.isAlive())
+                {
+                    particles.Remove(particle);
+                }
+            }
+        }
+
         public void draw(SpriteBatch batch)
         {
             foreach (var item in bombs)
             {
                 item.draw(batch);
+            }
+
+            foreach (var particle in particles)
+            {
+                particle.draw(batch);
             }
         }
 
@@ -71,7 +92,7 @@ namespace Battleship.Managers
                 bool hit = false;
                 for (int i = 0; i < World.FIELD_SIZE; i++)
                 {
-                    if (isTargetValid(target, World.TILE_SIZE/2 + target.getBounds().X + (i * World.TILE_SIZE), y))
+                    if (isTargetValid(target, World.TILE_SIZE / 2 + target.getBounds().X + (i * World.TILE_SIZE), y))
                     {
                         hit = true;
                     }
@@ -115,11 +136,16 @@ namespace Battleship.Managers
 
         private void finishShooting(ShipField target)
         {
+            particles.Clear();
+
             bool hit = false;
             foreach (var item in bombPositions)
             {
                 if (target.hit(item.X, item.Y))
+                {
                     hit = true;
+                    spawnParticles(item.X, item.Y);
+                }
             }
 
             if (hit)
@@ -130,6 +156,16 @@ namespace Battleship.Managers
             bombPositions.Clear();
             bombs.Clear();
             isShooting = false;
+        }
+
+        private void spawnParticles(int x, int y)
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                Particle p = new Particle(x, y, MathUtils.random(-100 * MathUtils.random(), 100), MathUtils.random(-100, 100 * MathUtils.random()), 3, Color.Red);
+                p.setLife(.2f);
+                //particles.Add(p); // todo enable in future
+            }
         }
 
         public bool isTargetValid(ShipField target, float x, float y)

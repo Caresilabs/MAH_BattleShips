@@ -18,6 +18,11 @@ namespace Asteroid.Tools
             return (float)rnd.NextDouble() * max;
         }
 
+        public static float random()
+        {
+            return (float)rnd.NextDouble();
+        }
+
         public static float random(float min, float max)
         {
             return min + (float)rnd.NextDouble() * (max - min);
@@ -38,7 +43,6 @@ namespace Asteroid.Tools
             return rnd.Next(2) == 1 ? true : false;
         }
 
-        // todo
         public static float atan(float degree)
         {
             return (float)Math.Atan((double)degree);
