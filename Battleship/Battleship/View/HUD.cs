@@ -32,7 +32,7 @@ namespace Battleship.View
 
         public void draw(SpriteBatch batch)
         {
-            batch.DrawString(Assets.font, "Protip:\nUse keys 1-4 to change special attacks", Vector2.Zero, Color.White, 0, Vector2.Zero, .5f, SpriteEffects.None, 0);
+            batch.DrawString(Assets.font, "Protip:\nUse keys 1-4 to change special attacks", Vector2.Zero, Color.Black, 0, Vector2.Zero, .34f, SpriteEffects.None, 0);
 
             switch (world.getState())
             {
@@ -72,7 +72,7 @@ namespace Battleship.View
             }
 
             if (dialogText != null)
-                drawCenterString(batch, dialogText, 110, Color.Red, 0.65f);
+                drawCenterString(batch, dialogText, 123, Color.DarkGreen, 0.65f);
         }
 
         public static void drawCenterString(SpriteBatch batch, string text, float y, Color color, float scale = 1)
@@ -85,7 +85,7 @@ namespace Battleship.View
 
         public static void drawCenterString(SpriteBatch batch, string text, float y, float scale = 1)
         {
-            drawCenterString(batch, text, y, Color.White, scale);
+            drawCenterString(batch, text, y, Color.Black, scale);
         }
 
         public static void setDialogText(string text)

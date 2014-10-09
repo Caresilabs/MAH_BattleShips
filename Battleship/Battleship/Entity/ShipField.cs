@@ -7,6 +7,7 @@ using Battleship.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Battleship.View;
+using Battleship.Managers;
 
 namespace Battleship.Entity
 {
@@ -47,6 +48,7 @@ namespace Battleship.Entity
         private bool isAlive;
         private int hits;
         private string selectedAttack;
+        private ShootManager shootManager;
 
         public ShipField(World world, float x, float y)
         {
@@ -58,6 +60,7 @@ namespace Battleship.Entity
             this.selectedAttack = attacks.Keys.ToArray()[0];
             this.initFields();
             this.addDefaultShips();
+            this.shootManager = new ShootManager(this);
         }
 
         private void initFields()
@@ -93,16 +96,21 @@ namespace Battleship.Entity
             }
         }
 
+        public bool updateShoots(float delta, ShipField target)
+        {
+            return shootManager.update(delta, target);
+        }
+
         public void draw(SpriteBatch batch)
         {
             for (int i = 0; i < World.FIELD_SIZE; i++)
             {
                 // Draw Columns and Rows
                 Vector2 pos = new Vector2(position.X + i * World.TILE_SIZE + World.TILE_SIZE / 3, position.Y - 25);
-                batch.DrawString(Assets.font, IndexToColumn(i + 1), pos, Color.White, 0, Vector2.Zero, .5f, SpriteEffects.None, 0);
+                batch.DrawString(Assets.font, IndexToColumn(i + 1), pos, Color.Black, 0, Vector2.Zero, .5f, SpriteEffects.None, 0);
 
                 pos = new Vector2(position.X - 25, position.Y + i * World.TILE_SIZE + World.TILE_SIZE / 3);
-                batch.DrawString(Assets.font, (i + 1).ToString(), pos, Color.White, 0, Vector2.Zero, .5f, SpriteEffects.None, 0);
+                batch.DrawString(Assets.font, (i + 1).ToString(), pos, Color.Black, 0, Vector2.Zero, .5f, SpriteEffects.None, 0);
 
                 // Draw tiles
                 for (int j = 0; j < World.FIELD_SIZE; j++)
@@ -119,7 +127,7 @@ namespace Battleship.Entity
 
             // Draw shoots
             Vector2 textPos = new Vector2(position.X + bounds.Width/2 - 20, position.Y - 50);
-            batch.DrawString(Assets.font, "Hits: " + hits, textPos, Color.Red, 0, Vector2.Zero, .5f, SpriteEffects.None, 0);
+            batch.DrawString(Assets.font, "Hits: " + hits, textPos, Color.Black, 0, Vector2.Zero, .5f, SpriteEffects.None, 0);
 
 
             // Draw attacks left
@@ -132,7 +140,16 @@ namespace Battleship.Entity
             attackString = attackString.Substring(0, attackString.Length - 1);
 
             textPos = new Vector2(position.X + 10, position.Y + bounds.Height + 2);
-            batch.DrawString(Assets.font, attackString, textPos, Color.White, 0, Vector2.Zero, .39f, SpriteEffects.None, 0);
+            batch.DrawString(Assets.font, attackString, textPos, Color.Black, 0, Vector2.Zero, .39f, SpriteEffects.None, 0);
+
+
+            // Draw missiles
+            shootManager.draw(batch);
+        }
+
+        public bool shoot(ShipField target, float x, float y)
+        {
+            return shootManager.shoot(target, x, y);
         }
 
         // Return true if hit was done correctly
@@ -145,15 +162,8 @@ namespace Battleship.Entity
                 if (tile.hit())
                 {
                     hits++;
-                    if (tile.getId() == Tile.TILE_HIT)
-                    {
-                        Assets.bombSound.Play(.45f, 0, 0);
-                    }
-                    else
-                    {
-                        Assets.missSound.Play(.3f, 0, 0);
-                    }
 
+                   
                     // Check if all parts is down
                     if (getAliveShipParts(tileId) == 0)
                     {
@@ -163,7 +173,11 @@ namespace Battleship.Entity
                             HUD.setDialogText("You sunk my " + ships[tileId].getName());
                         }
                     }
-                    return true;
+                    if (tile.getId() == Tile.TILE_HIT)
+                    {
+                        return true;
+                    }
+                    return false;
                 }
             }
             return false;
@@ -400,6 +414,11 @@ namespace Battleship.Entity
         public Dictionary<string, bool> getAttacks()
         {
             return attacks;
+        }
+
+        public ShootManager getShootManager()
+        {
+            return shootManager;
         }
     }
 }

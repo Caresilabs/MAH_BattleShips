@@ -17,13 +17,13 @@ namespace Battleship.View
     {
         private World world;
         private Camera2D camera;
-        private Rectangle bg;
+        private Texture2D bg;
 
         public WorldRenderer(World world)
         {
             this.world = world;
             this.camera = new Camera2D(1280, 720);
-            this.bg = Assets.getRegion("tile");
+            this.bg = Assets.bg2;
         }
 
         public void update(float delta)
@@ -36,7 +36,7 @@ namespace Battleship.View
             // begin batch with cameras matrix
             batch.Begin(SpriteSortMode.BackToFront,
                         BlendState.AlphaBlend,
-                        SamplerState.PointClamp,
+                        SamplerState.LinearClamp,
                         null,
                         null,
                         null,
@@ -44,6 +44,8 @@ namespace Battleship.View
 
             drawBackground(batch);
 
+            batch.Draw(Assets.ui, new Rectangle(-400 / 2, -720 / 2 - 10, 400, 135), Assets.getRegion("uiContainer1"), Color.White);
+        
             drawTiles(batch);
 
             batch.End();
@@ -57,8 +59,7 @@ namespace Battleship.View
 
         private void drawBackground(SpriteBatch batch)
         {
-           // batch.Draw(Assets.getItems(), new Rectangle(0,0,400,400), bg, Color.White, 0, Vector2.Zero, SpriteEffects.None, 1);
-            //TODO
+            batch.Draw(bg, new Rectangle(-1280/2,-720/2, 1280,720), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 1);
         }
 
         public Camera2D getCamera()

@@ -19,6 +19,10 @@ namespace Battleship
         private static ContentManager manager;
         private static Texture2D items;
 
+        public static Texture2D ui;
+        public static Texture2D bg1;
+        public static Texture2D bg2;
+
         public static SpriteFont font;
 
         public static SoundEffect bombSound;
@@ -31,6 +35,9 @@ namespace Battleship
 
             // load our sprite sheet
             items = manager.Load<Texture2D>("Graphics/items");
+            ui = manager.Load<Texture2D>("Graphics/ui");
+            bg1 = manager.Load<Texture2D>("Graphics/bg1");
+            bg2 = manager.Load<Texture2D>("Graphics/bg2");
             
             // Load our assets regions
             loadRegion("tile", 200, 150, 50, 50);
@@ -46,8 +53,12 @@ namespace Battleship
             loadRegion("ship2", 0, 200, 100, 50);
 
             // others
-            loadRegion("button", 150, 100, 100, 50);
             loadRegion("pixel", 249, 249, 1, 1);
+
+            // Load UI
+            loadRegion("title", 0, 0, 512, 64);
+            loadRegion("uiContainer1", 0, 64, 320, 128);
+            loadRegion("button", 320, 64, 192, 64);
 
             // Load font 
             font = manager.Load<SpriteFont>("Font/font");

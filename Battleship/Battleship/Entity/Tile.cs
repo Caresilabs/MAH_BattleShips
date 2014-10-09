@@ -60,7 +60,7 @@ namespace Battleship.Entity
                 if (effect == TileEffect.BombMark)
                 {
                     batch.Draw(Assets.getItems(), new Rectangle((int)(position.X + x * World.TILE_SIZE), (int)(position.Y + y * World.TILE_SIZE), World.TILE_SIZE, World.TILE_SIZE)
-                    , Assets.getRegion("tileBomb"), Color.White, 0, Vector2.Zero, SpriteEffects.None, .2f);
+                    , Assets.getRegion("tileBomb"), Color.White, 0, Vector2.Zero, SpriteEffects.None, .04f);
                 }
             }
         }
@@ -77,6 +77,13 @@ namespace Battleship.Entity
             {
                 setId(TILE_WATER);
             }
+            return true;
+        }
+
+        public bool isHitable()
+        {
+            if (id != TILE_EMPTY && id < 0) return false;
+
             return true;
         }
 

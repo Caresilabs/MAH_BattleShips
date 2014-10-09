@@ -83,13 +83,14 @@ namespace Battleship.Controller
                        null,
                        camera.getMatrix());
 
+            batch.Draw(Assets.bg1, new Rectangle(-1280 / 2, -720 / 2, 1280, 720), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 1);
 
             foreach (var item in buttons)
             {
                 item.draw(batch);
             }
 
-            drawCenterString(batch, Start.GAME_NAME, -240, Color.Red, 1.9f);
+            batch.Draw(Assets.ui, new Vector2(-256*1.5f, -240), Assets.getRegion("title"), Color.White, 0, Vector2.Zero, 1.5f ,SpriteEffects.None, 0);
 
             batch.End();
         }

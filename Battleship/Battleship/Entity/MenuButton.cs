@@ -31,7 +31,7 @@ namespace Battleship.Entity
             this.scale = scale;
             this.startPos = new Vector2(x, y);
             this.bounds = new Rectangle((int)x - (int)(Assets.font.MeasureString(text).Length()/2 * scale), (int)y, (int)(Assets.font.MeasureString(text).Length()*scale), (int)Assets.font.MeasureString(text).Y);
-            this.backgrounds = new Rectangle(bounds.X - 20, bounds.Y - 10, bounds.Width + 30, bounds.Height+ 30);
+            this.backgrounds = new Rectangle(bounds.X - 20, bounds.Y - 5, bounds.Width + 30, bounds.Height+ 30);
         }
 
         public void touchDown(float x, float y)
@@ -45,7 +45,7 @@ namespace Battleship.Entity
 
         public void draw(SpriteBatch batch)
         {
-            batch.Draw(Assets.getItems(), backgrounds, Assets.getRegion("button"), Color.White);
+            batch.Draw(Assets.ui, backgrounds, Assets.getRegion("button"), Color.White, 0, Vector2.Zero, SpriteEffects.None, .1f);
             batch.DrawString(Assets.font, text, new Vector2(bounds.X, bounds.Y), Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0);
         }
 

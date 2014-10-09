@@ -13,14 +13,17 @@ namespace Battleship.Entity
         private const int TILE_SUNK = -3;
         private int[,] consumedTiles = new int[World.FIELD_SIZE, World.FIELD_SIZE];
 
-        private float time;
         private Point? lastHit;
         private List<Point> unfinishedShips = new List<Point>();
+
+        private float time;
+        private bool isShooting;
 
         public AIShipField(World world, float x, float y)
             : base(world, x, y)
         {
             this.time = 0;
+            this.isShooting = false;
         }
 
         public void updateAI(float delta, ShipField target)
@@ -37,11 +40,20 @@ namespace Battleship.Entity
             }
             else if (getWorld().getState() == World.State.Player2Turn)
             {
-                if (time > 1.22f)
+                if (time > 1.0f)
                 {
-                    shootRandomTile(target);
-                    updateUnfinishedShips(target);
-                    nextTurn();
+                    if (!isShooting)
+                    {
+                        shootRandomTile(target);
+                        updateUnfinishedShips(target);
+                        isShooting = true;
+                    }
+
+                    if (updateShoots(delta, target))
+                    {
+                        nextTurn();
+                        isShooting = false;
+                    }
                 }
             }
         }
@@ -50,6 +62,13 @@ namespace Battleship.Entity
         {
             int maxLoop = 500;
             int loops = 0;
+
+            // random attack
+            if (MathUtils.random(0, 10) >= 2)
+            {
+                selectAttack(MathUtils.random(0, getAttacks().Count - 1));
+            } 
+
             while (true)
             {
                 // todo...hmm look over
@@ -81,21 +100,25 @@ namespace Battleship.Entity
                         continue;
                     }
 
-                    if (target.hit(x, y))
+                    if (shoot(target, x, y))
                     {
-                        // Move hunting target if hit
-                        if (target.getTile(x, y).getId() == Tile.TILE_HIT)
+                        foreach (var item in getShootManager().getBombPositions())
                         {
-                            lastHit = new Point(x, y);
-                            consumedTiles[target.getX(x), target.getY(y)] = id;
-
-                            if (target.getAliveShipParts(id) == 0)
+                            // Move hunting target if hit
+                            if (target.getTile(item.X, item.Y).getId() > 0)
                             {
-                                sankBoat(id);
-                                lastHit = null;
-                                // now check leftovers
+                                lastHit = new Point(item.X, item.Y);
+                                consumedTiles[target.getX(item.X), target.getY(item.Y)] = id;
+
+                                if (target.getAliveShipParts(id) == 0)
+                                {
+                                    sankBoat(id);
+                                    lastHit = null;
+                                    // now check leftovers
+                                }
                             }
                         }
+                       
                         break;
                     }
                 }
@@ -106,22 +129,20 @@ namespace Battleship.Entity
                 else // last option... just random shoot
                 {
                     // random shoot
-                    int x = MathUtils.random(target.getBounds().X, getBounds().Width);
-                    int y = MathUtils.random(target.getBounds().Y, getBounds().Height);
+                    int x = MathUtils.random(target.getBounds().X, target.getBounds().Width);
+                    int y = MathUtils.random(target.getBounds().Y, target.getBounds().Height);
 
                     int id = target.getTile(x, y) != null ? target.getTile(x, y).getId() : -10;
 
-                    if (target.hit(x, y))
+                    if (shoot(target, x, y))
                     {
-                        if (target.getTile(x, y).getId() == Tile.TILE_HIT)
+                        foreach (var item in getShootManager().getBombPositions())
                         {
-                            //consumedTiles[target.getX(x), target.getY(y)] = Tile.TILE_HIT;
-                            consumedTiles[target.getX(x), target.getY(y)] = id;
-                            lastHit = new Point(x, y);
-                        }
-                        else if (target.getTile(x, y).getId() == Tile.TILE_WATER)
-                        {
-                            // consumedTiles[target.getX(x), target.getY(y)] = Tile.TILE_WATER;
+                            if (target.getTile(item.X, item.Y).getId() > 0)
+                            {
+                                consumedTiles[target.getX(item.X), target.getY(item.Y)] = id;
+                                lastHit = new Point(item.X, item.Y);
+                            }
                         }
                         break;
                     }

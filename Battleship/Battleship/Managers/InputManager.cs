@@ -20,7 +20,8 @@ namespace Battleship.Managers
         private Ship currentShip;
         private Vector2 origin;
         private Vector2 mouseWorld;
-
+        
+        private bool isShooting;
         private bool showingShips;
 
         public InputManager(World world)
@@ -28,6 +29,7 @@ namespace Battleship.Managers
             this.world = world;
             this.mouse = new Vector2();
             this.origin = new Vector2();
+            this.isShooting = false;
         }
 
         public void update(float delta, ShipField field, ShipField targetField = null)
@@ -44,14 +46,14 @@ namespace Battleship.Managers
             }
             else if (world.getState() == World.State.Player1Turn || world.getState() == World.State.Player2Turn)
             {
-                updateTurn(field, targetField);
+                updateTurn(delta, field, targetField);
             }
 
             oldKeyState = Keyboard.GetState();
             oldMouseState = Mouse.GetState();
         }
 
-        private void updateTurn(ShipField field, ShipField targetField)
+        private void updateTurn(float delta, ShipField field, ShipField targetField)
         {
             updateChangeAttack(field);
 
@@ -59,7 +61,7 @@ namespace Battleship.Managers
             field.hover(mouseWorld.X, mouseWorld.Y);
 
             // Hover effects
-            if (targetField != null)
+            if (targetField != null && !isShooting)
             {
                 if (field.getSelectedAttack() == "Normal Strike")
                 {
@@ -87,11 +89,19 @@ namespace Battleship.Managers
                     targetField.hover(mouseWorld.X - World.TILE_SIZE, mouseWorld.Y, Tile.TileEffect.BombMark);
                 }
             }
+            else
+            {
+                targetField.hover(mouseWorld.X, mouseWorld.Y, Tile.TileEffect.Selected);
+            }
 
             // FIRE MAH LAZER!! Actual shooting
-            if (wasClicked() && targetField != null)
+            if (wasClicked() && targetField != null && !isShooting)
             {
-                if (field.getSelectedAttack() == "Normal Strike")
+                if (field.shoot(targetField, mouseWorld.X, mouseWorld.Y))
+                {
+                    isShooting = true;
+                }
+               /* if (field.getSelectedAttack() == "Normal Strike")
                 {
                     if (targetField.hit(mouseWorld.X, mouseWorld.Y))
                     {
@@ -138,6 +148,15 @@ namespace Battleship.Managers
                         field.consumeAttack();
                         nextTurn(field);
                     }
+                }
+                */
+            }
+
+            if (isShooting)
+            {
+                if (field.updateShoots(delta, targetField)) { 
+                    nextTurn(field);
+                    isShooting = false;
                 }
             }
 

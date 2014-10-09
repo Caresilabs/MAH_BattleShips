@@ -37,7 +37,7 @@ namespace Battleship
             IsMouseVisible = true;
             Window.AllowUserResizing = true;
             Window.Title = GAME_NAME + " by [Simon Bothen]"; //  set title to our game name
-            Window.ClientSizeChanged += new EventHandler<EventArgs>(WindowSizeChanged);
+           // Window.ClientSizeChanged += new EventHandler<EventArgs>(WindowSizeChanged);
         }
 
         protected override void Initialize()
