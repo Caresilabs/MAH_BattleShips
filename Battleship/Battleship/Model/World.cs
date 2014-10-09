@@ -16,8 +16,8 @@ namespace Battleship.Model
         // World size
         public const float FIELD_WIDTH = 500;
         public const float FIELD_HEIGHT = 500;
-        public const int FIELD_SIZE = 10;
-
+        
+        public static int FIELD_SIZE = 10;
         public static int TILE_SIZE;
 
         private State state;

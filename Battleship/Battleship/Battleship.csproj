@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="Assets.cs" />
     <Compile Include="Controller\GameScreen.cs" />
+    <Compile Include="Controller\CreateGameScreen.cs" />
     <Compile Include="Controller\MainMenuScreen.cs" />
     <Compile Include="Entity\AIShipField.cs" />
     <Compile Include="Entity\Missile.cs" />

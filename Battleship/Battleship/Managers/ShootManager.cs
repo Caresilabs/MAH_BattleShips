@@ -71,7 +71,10 @@ namespace Battleship.Managers
                 bool hit = false;
                 for (int i = 0; i < World.FIELD_SIZE; i++)
                 {
-                    if (isTargetValid(target, target.getBounds().X + i * World.TILE_SIZE, y)) hit = true;
+                    if (isTargetValid(target, World.TILE_SIZE/2 + target.getBounds().X + (i * World.TILE_SIZE), y))
+                    {
+                        hit = true;
+                    }
                 }
                 if (hit)
                 {
@@ -84,7 +87,7 @@ namespace Battleship.Managers
                 bool hit = false;
                 for (int i = 0; i < World.FIELD_SIZE; i++)
                 {
-                    if (isTargetValid(target, x, target.getBounds().Y + i * World.TILE_SIZE)) hit = true;
+                    if (isTargetValid(target, x, World.TILE_SIZE / 2 + target.getBounds().Y + i * World.TILE_SIZE)) hit = true;
                 }
                 if (hit)
                 {

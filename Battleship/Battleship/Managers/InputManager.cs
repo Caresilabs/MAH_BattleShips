@@ -71,14 +71,14 @@ namespace Battleship.Managers
                 {
                     for (int i = 0; i < World.FIELD_SIZE; i++)
                     {
-                        targetField.hover(targetField.getBounds().X + i * World.TILE_SIZE, mouseWorld.Y, Tile.TileEffect.BombMark);
+                        targetField.hover(World.TILE_SIZE / 2 + targetField.getBounds().X + i * World.TILE_SIZE, mouseWorld.Y, Tile.TileEffect.BombMark);
                     }
                 }
                 else if (field.getSelectedAttack() == "Vertical Strike")
                 {
                     for (int i = 0; i < World.FIELD_SIZE; i++)
                     {
-                        targetField.hover(mouseWorld.X, targetField.getBounds().Y + i * World.TILE_SIZE, Tile.TileEffect.BombMark);
+                        targetField.hover(mouseWorld.X, World.TILE_SIZE / 2 + targetField.getBounds().Y + i * World.TILE_SIZE, Tile.TileEffect.BombMark);
                     }
                 }
                 else if (field.getSelectedAttack() == "Circle Strike")

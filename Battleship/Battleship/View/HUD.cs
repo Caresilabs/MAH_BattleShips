@@ -32,7 +32,7 @@ namespace Battleship.View
 
         public void draw(SpriteBatch batch)
         {
-            batch.DrawString(Assets.font, "Protip:\nUse keys 1-4 to change special attacks", Vector2.Zero, Color.Black, 0, Vector2.Zero, .34f, SpriteEffects.None, 0);
+            batch.DrawString(Assets.font, "Protip:\nUse keys 1-4 to change special attacks", Vector2.Zero, Color.Black, 0, Vector2.Zero, .37f, SpriteEffects.None, 0);
 
             switch (world.getState())
             {
@@ -60,12 +60,12 @@ namespace Battleship.View
                     drawCenterString(batch, "Press Space to Toggle ships visible", 70, .5f);
                     break;
                 case World.State.Player1Win:
-                    drawCenterString(batch, "Press R for a rematch", 120, .5f);
-                    drawCenterString(batch, "Player 1 won!", 60, .8f);
+                    drawCenterString(batch, "Press R for a rematch", 70, .5f);
+                    drawCenterString(batch, "Player 1 won!", 30, .8f);
                     break;
                 case World.State.Player2Win:
-                    drawCenterString(batch, "Press R for a rematch", 120, .5f);
-                    drawCenterString(batch, "Player 2 won!", 60, .8f);
+                    drawCenterString(batch, "Press R for a rematch", 70, .5f);
+                    drawCenterString(batch, "Player 2 won!", 30, .8f);
                     break;
                 default:
                     break;

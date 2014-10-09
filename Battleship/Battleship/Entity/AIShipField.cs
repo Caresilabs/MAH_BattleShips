@@ -32,7 +32,7 @@ namespace Battleship.Entity
 
             if (getWorld().getState() == World.State.Player2Init)
             {
-                if (time > 1.4f)
+                if (time > 2f)
                 {
                     placeShips();
                     nextTurn();
@@ -64,14 +64,13 @@ namespace Battleship.Entity
             int loops = 0;
 
             // random attack
-            if (MathUtils.random(0, 10) >= 2)
+            if (MathUtils.random(0, 10) >= 9)
             {
                 selectAttack(MathUtils.random(0, getAttacks().Count - 1));
             } 
 
             while (true)
             {
-                // todo...hmm look over
                 loops++;
 
                 // hunt down til dead
@@ -110,11 +109,10 @@ namespace Battleship.Entity
                                 lastHit = new Point(item.X, item.Y);
                                 consumedTiles[target.getX(item.X), target.getY(item.Y)] = id;
 
-                                if (target.getAliveShipParts(id) == 0)
+                                if (target.getAliveShipParts(id) <= 1)
                                 {
                                     sankBoat(id);
                                     lastHit = null;
-                                    // now check leftovers
                                 }
                             }
                         }
@@ -142,6 +140,12 @@ namespace Battleship.Entity
                             {
                                 consumedTiles[target.getX(item.X), target.getY(item.Y)] = id;
                                 lastHit = new Point(item.X, item.Y);
+
+                                if (target.getAliveShipParts(id) <= 1)
+                                {
+                                    sankBoat(id);
+                                    lastHit = null;
+                                }
                             }
                         }
                         break;

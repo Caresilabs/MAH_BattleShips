@@ -39,6 +39,8 @@ namespace Battleship.Entity
             { "Circle Strike", true }
         };
 
+        public static int SHIPS_COUNT = 5;
+
         private Tile[,] tiles = new Tile[World.FIELD_SIZE, World.FIELD_SIZE];
         private Dictionary<int, Ship> ships;
         private Vector2 position;
@@ -77,10 +79,10 @@ namespace Battleship.Entity
 
         private void addDefaultShips()
         {
-            for (int i = 0; i < battleShips.Count; i++)
+            for (int i = 0; i < SHIPS_COUNT; i++)
             {
-                Ship ship = new Ship(battleShips.Keys.ToArray()[i], position.X, position.Y + i * (World.TILE_SIZE + 1),
-                    battleShips.Values.ToArray()[i]);
+                Ship ship = new Ship(battleShips.Keys.ToArray()[i % battleShips.Count], position.X, position.Y + i * (World.TILE_SIZE + 1),
+                    battleShips.Values.ToArray()[i % battleShips.Count]);
                 placeShip(ship);
                 ships.Add(i + 1, ship);
             }

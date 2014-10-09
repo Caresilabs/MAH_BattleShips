@@ -12,40 +12,58 @@ using Battleship.Model;
 
 namespace Battleship.Controller
 {
-    public class MainMenuScreen : Screen, TouchListener
+    public class CreateGameScreen : Screen, TouchListener
     {
+        private Vector2[] sizes = new Vector2[]{ 
+            new Vector2(10, 10),
+            new Vector2(14, 14),
+            new Vector2(16, 16),
+            new Vector2(20, 20)
+        };
+
+        private int[] ships = new int[]{ 
+           3,
+           4,
+           5,
+           7,
+           9,
+           10
+        };
 
         private Camera2D camera;
         private List<MenuButton> buttons;
-        private MenuButton resolutionButton;
         private MouseState oldMouseState;
-        private int currentRes;
+        private World.Mode mode;
+        MenuButton countButton;
+        MenuButton sizeButton;
 
-        private Vector2[] resolutions = new Vector2[]{ 
-            new Vector2(1280, 720),
-           
-            new Vector2(1024, 768),
-            new Vector2(960, 640),
-        };
+        private int gridSizeId;
+        private int shipCountId;
+
+        public CreateGameScreen(World.Mode mode)
+        {
+            this.mode = mode;
+        }
 
         public override void init()
         {
             this.buttons = new List<MenuButton>();
             this.camera = new Camera2D(1280, 720);
-            this.currentRes = 0;
+            this.shipCountId = 2;
+            this.gridSizeId = 1;
             initButtons();
         }
 
         private void initButtons()
         {
-            MenuButton startPVP = new MenuButton(this, "startButtonPVP", "Start VS Player", 0, -50, 1.3f);
-            buttons.Add(startPVP);
+            MenuButton startButton = new MenuButton(this, "start", "Start!", 0, 190, 1.3f);
+            buttons.Add(startButton);
 
-            MenuButton startPVE = new MenuButton(this, "startButtonPVE", "Start VS AI", 0, 70, 1.3f);
-            buttons.Add(startPVE);
+            countButton = new MenuButton(this, "count", "ships: " + ships[shipCountId], 0, 70, 1.3f);
+            buttons.Add(countButton);
 
-            resolutionButton = new MenuButton(this, "resolution", resolutions[currentRes].X + "x" + resolutions[currentRes].Y, 0, 190, 1.3f);
-            buttons.Add(resolutionButton);
+            sizeButton = new MenuButton(this, "size", sizes[gridSizeId].X + "x" + sizes[gridSizeId].Y, 0, -50, 1.3f);
+            buttons.Add(sizeButton);
         }
 
         public override void update(float delta)
@@ -128,27 +146,27 @@ namespace Battleship.Controller
 
         void TouchListener.touchDown(string name)
         {
-            if (name == "startButtonPVP")
+            if (name == "count")
             {
-                setScreen(new CreateGameScreen(World.Mode.PlayerVSPlayer));
-            }
-            else if (name == "startButtonPVE")
-            {
-                setScreen(new CreateGameScreen(World.Mode.PlayerVSAI));
-            }
-            else if (name == "exitButton")
-            {
-                getGame().Exit();
-            }
-            else if (name == "resolution")
-            {
-                currentRes++;
-                if (currentRes >= resolutions.Count())
-                    currentRes = 0;
+                shipCountId++;
+                if (shipCountId >= ships.Count())
+                    shipCountId = 0;
 
-                resolutionButton.setText(resolutions[currentRes].X + "x" + resolutions[currentRes].Y);
+                countButton.setText("ships: " + ships[shipCountId]);
+            }
+            else if (name == "size")
+            {
+                gridSizeId++;
+                if (gridSizeId >= sizes.Count())
+                    gridSizeId = 0;
 
-                Start.changeResolution((int)resolutions[currentRes].X, (int)resolutions[currentRes].Y);
+                sizeButton.setText(sizes[gridSizeId].X + "x" + sizes[gridSizeId].Y);
+            }
+            else if (name == "start")
+            {
+                World.FIELD_SIZE = (int)sizes[gridSizeId].X;
+                ShipField.SHIPS_COUNT = ships[shipCountId];
+                setScreen(new GameScreen(mode));
             }
         }
     }
