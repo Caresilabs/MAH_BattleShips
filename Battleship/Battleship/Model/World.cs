@@ -16,7 +16,7 @@ namespace Battleship.Model
         // World size
         public const float FIELD_WIDTH = 500;
         public const float FIELD_HEIGHT = 500;
-        
+
         public static int FIELD_SIZE = 10;
         public static int TILE_SIZE;
 
@@ -32,7 +32,7 @@ namespace Battleship.Model
 
         public enum Mode
         {
-            PlayerVSAI, PlayerVSPlayer
+            PlayerVSAI, PlayerVSPlayer, AIVSAI
         }
 
         public World(Mode mode)
@@ -50,15 +50,23 @@ namespace Battleship.Model
             float x = 640 - FIELD_WIDTH;
 
             // Init fields
-            this.shipFieldLeft = new PlayerShipField(this, -640 + x / 2, y);
+
 
             if (mode == Mode.PlayerVSAI)
             {
+                this.shipFieldLeft = new PlayerShipField(this, -640 + x / 2, y);
                 this.shipFieldRight = new AIShipField(this, x / 2, y);
             }
-            else
+            else if (mode == Mode.PlayerVSPlayer)
             {
+                this.shipFieldLeft = new PlayerShipField(this, -640 + x / 2, y);
                 this.shipFieldRight = new PlayerShipField(this, x / 2, y);
+            }
+            else if (mode == Mode.AIVSAI)
+            {
+                this.shipFieldLeft = new AIShipField(this, -640 + x / 2, y);
+                this.shipFieldRight = new AIShipField(this, x / 2, y);
+                shipFieldLeft.hideShips();
             }
 
             shipFieldRight.hideShips();
@@ -108,7 +116,8 @@ namespace Battleship.Model
             }
         }
 
-        public void gameOver() {
+        public void gameOver()
+        {
             shipFieldLeft.showShips();
             shipFieldRight.showShips();
         }
@@ -129,7 +138,7 @@ namespace Battleship.Model
             {
                 return shipFieldLeft;
             }
-            else 
+            else
             {
                 return shipFieldRight;
             }

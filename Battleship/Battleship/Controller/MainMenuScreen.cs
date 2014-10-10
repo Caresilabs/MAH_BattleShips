@@ -74,6 +74,9 @@ namespace Battleship.Controller
                 }
             }
 
+            if (Keyboard.GetState().IsKeyDown(Keys.A))
+                setScreen(new CreateGameScreen(World.Mode.AIVSAI));
+
             oldMouseState = Mouse.GetState();
         }
 

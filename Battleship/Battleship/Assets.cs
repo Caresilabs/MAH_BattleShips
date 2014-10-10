@@ -15,6 +15,8 @@ namespace Battleship
      */
     public class Assets
     {
+        public const bool SOUND = false;
+
         private static Dictionary<String, Rectangle> regions;
         private static ContentManager manager;
         private static Texture2D items;
@@ -64,13 +66,16 @@ namespace Battleship
             font = manager.Load<SpriteFont>("Font/font");
 
             // load sound
-            bombSound = manager.Load<SoundEffect>("Audio/bomb");
-            missSound = manager.Load<SoundEffect>("Audio/miss");
+            if (SOUND)
+            {
+                bombSound = manager.Load<SoundEffect>("Audio/bomb");
+                missSound = manager.Load<SoundEffect>("Audio/miss");
 
-            music = manager.Load<Song>("Audio/music");
-            MediaPlayer.Volume = .2f;
-            MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(music);
+                music = manager.Load<Song>("Audio/music");
+                MediaPlayer.Volume = .2f;
+                MediaPlayer.IsRepeating = true;
+                MediaPlayer.Play(music);
+            }
         }
 
         private static void loadRegion(string name, int x, int y, int width, int height) {

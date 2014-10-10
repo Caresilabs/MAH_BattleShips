@@ -51,7 +51,7 @@ namespace Battleship.Entity
 
         public void draw(SpriteBatch batch)
         {
-            batch.Draw(Assets.getItems(), bounds, Assets.getRegion("tileBomb"), Color.White, (float)(angle + Math.PI), new Vector2(SIZE / 2, SIZE / 2), SpriteEffects.None, 0);
+            batch.Draw(Assets.getItems(), bounds, Assets.getRegion("tileBomb"), Color.White, (float)(angle + Math.PI*2), new Vector2(SIZE / 2, SIZE / 2), SpriteEffects.None, 0);
         }
 
         public Vector2 getPosition()

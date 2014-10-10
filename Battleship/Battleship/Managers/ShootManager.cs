@@ -130,6 +130,17 @@ namespace Battleship.Managers
                     return true;
                 }
             }
+            else if (field.getSelectedAttack() == "Nuke")
+            {
+                for (int i = 0; i < World.FIELD_SIZE; i++)
+                {
+                    for (int j = 0; j < World.FIELD_SIZE; j++)
+                    {
+                        isTargetValid(target, World.TILE_SIZE / 2 + target.getBounds().X + (i * World.TILE_SIZE), World.TILE_SIZE / 2 + target.getBounds().Y + j * World.TILE_SIZE);
+                    }
+                }
+                return true;
+            }
             return false;
 
         }
@@ -148,10 +159,13 @@ namespace Battleship.Managers
                 }
             }
 
-            if (hit)
-                Assets.bombSound.Play(.45f, 0, 0);
-            else
-                Assets.missSound.Play(.3f, 0, 0);
+            if (Assets.SOUND)
+            {
+                if (hit)
+                    Assets.bombSound.Play(.45f, 0, 0);
+                else
+                    Assets.missSound.Play(.3f, 0, 0);
+            }
 
             bombPositions.Clear();
             bombs.Clear();

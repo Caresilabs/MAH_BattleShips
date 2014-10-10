@@ -55,7 +55,14 @@ namespace Battleship.Controller
             switch (world.getState())
             {
                 case World.State.Player1Init:
-                    input.update(delta, world.getCurrentField());
+                    if (world.getMode() == World.Mode.AIVSAI)
+                    {
+                        ((AIShipField)world.getCurrentField()).updateAI(delta, world.getTargetField());
+                    }
+                    else
+                    {
+                        input.update(delta, world.getCurrentField()); 
+                    }
                     break;
                 case World.State.Player2Init:
                     if (world.getMode() == World.Mode.PlayerVSPlayer)
@@ -69,7 +76,14 @@ namespace Battleship.Controller
                     }
                     break;
                 case World.State.Player1Turn:
-                    input.update(delta, world.getCurrentField(), world.getTargetField());
+                    if (world.getMode() == World.Mode.AIVSAI)
+                    {
+                        ((AIShipField)world.getCurrentField()).updateAI(delta, world.getTargetField());
+                    }
+                    else
+                    {
+                        input.update(delta, world.getCurrentField(), world.getTargetField());
+                    }
                     break;
                 case World.State.Player2Turn:
                     if (world.getMode() == World.Mode.PlayerVSPlayer)

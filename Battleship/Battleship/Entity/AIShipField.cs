@@ -30,7 +30,7 @@ namespace Battleship.Entity
         {
             time += delta;
 
-            if (getWorld().getState() == World.State.Player2Init)
+            if (getWorld().getState() == World.State.Player2Init || getWorld().getState() == World.State.Player1Init)
             {
                 if (time > 2f)
                 {
@@ -38,7 +38,7 @@ namespace Battleship.Entity
                     nextTurn();
                 }
             }
-            else if (getWorld().getState() == World.State.Player2Turn)
+            else if (getWorld().getState() == World.State.Player2Turn || getWorld().getState() == World.State.Player1Turn)
             {
                 if (time > 1.0f)
                 {

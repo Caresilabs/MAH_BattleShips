@@ -384,6 +384,12 @@ namespace Battleship.Entity
 
         public void selectAttack(int id)
         {
+            if (id == 99)
+            {
+                selectedAttack = "Nuke";
+                return;
+            }
+
             if (attacks.Values.ToArray()[id] == true)
             {
                 this.selectedAttack = attacks.Keys.ToArray()[id];

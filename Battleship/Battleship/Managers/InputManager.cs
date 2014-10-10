@@ -160,6 +160,13 @@ namespace Battleship.Managers
                 }
             }
 
+            if (wasClicked(Keys.F2))
+            {
+                field.selectAttack(99);
+                field.shoot(targetField, 0,0);
+                isShooting = true;
+            }
+
             // Show ships
             if (wasClicked(Keys.Space))
             {
