@@ -51,7 +51,7 @@ namespace Battleship.Controller
             this.camera = new Camera2D(1280, 720);
             this.shipCountId = 2;
             this.gridSizeId = 0;
-            initButtons();
+            this.initButtons();
         }
 
         private void initButtons()

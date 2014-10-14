@@ -48,6 +48,7 @@ namespace Battleship.Entity
               , region, Color.White, 0, Vector2.Zero, SpriteEffects.None, .02f);
             }
 
+            //draw selected
             if (effect == TileEffect.Selected)
             {
                 batch.Draw(Assets.getItems(), new Rectangle((int)(position.X + x * World.TILE_SIZE), (int)(position.Y + y * World.TILE_SIZE), World.TILE_SIZE, World.TILE_SIZE)

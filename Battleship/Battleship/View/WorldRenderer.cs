@@ -44,6 +44,7 @@ namespace Battleship.View
 
             drawBackground(batch);
 
+            //draw container
             batch.Draw(Assets.ui, new Rectangle(-400 / 2, -720 / 2 - 10, 400, 135), Assets.getRegion("uiContainer1"), Color.White);
         
             drawTiles(batch);

@@ -15,7 +15,7 @@ namespace Battleship
      */
     public class Assets
     {
-        public const bool SOUND = false;
+        public const bool SOUND = true;
 
         private static Dictionary<String, Rectangle> regions;
         private static ContentManager manager;
@@ -72,7 +72,7 @@ namespace Battleship
                 missSound = manager.Load<SoundEffect>("Audio/miss");
 
                 music = manager.Load<Song>("Audio/music");
-                MediaPlayer.Volume = .2f;
+                MediaPlayer.Volume = .8f;
                 MediaPlayer.IsRepeating = true;
                 MediaPlayer.Play(music);
             }

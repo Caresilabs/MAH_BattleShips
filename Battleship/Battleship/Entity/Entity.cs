@@ -13,6 +13,7 @@ namespace Battleship.Entity
         private Vector2 position;
         private Vector2 drawOffset;
         private Rectangle bounds;
+        private Rectangle drawRectangle;
 
         private bool hidden;
         private float rotation;
@@ -27,6 +28,7 @@ namespace Battleship.Entity
             this.position = new Vector2(x, y);
             this.bounds = new Rectangle((int)x, (int)y, (int)width, (int)height);
             this.drawOffset = new Vector2();
+            this.drawRectangle = new Rectangle();
             this.width = width;
             this.height = height;
             this.region = region;
@@ -41,14 +43,14 @@ namespace Battleship.Entity
         public void updateBounds()
         {
             // Position
-            this.bounds.X = (int)position.X; //- (int)width/2;
-            this.bounds.Y = (int)position.Y;// - (int)height/2;
+            this.bounds.X = (int)position.X; 
+            this.bounds.Y = (int)position.Y;
+
             // Width
             this.bounds.Width = (int)width;
             this.bounds.Height = (int)height;
         }
 
-        private Rectangle drawRectangle = new Rectangle();
         public virtual void draw(SpriteBatch batch)
         {
             if (hidden) return;

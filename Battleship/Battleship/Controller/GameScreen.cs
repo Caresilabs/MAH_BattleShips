@@ -51,7 +51,7 @@ namespace Battleship.Controller
             world.update(delta);
             updateConfetti(delta);
 
-            // Input update
+            // State update
             switch (world.getState())
             {
                 case World.State.Player1Init:

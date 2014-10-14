@@ -19,7 +19,6 @@ namespace Battleship
 
         private static GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-
         private Screen currentScreen;
 
         private float aspectRatio;
@@ -37,7 +36,6 @@ namespace Battleship
             IsMouseVisible = true;
             Window.AllowUserResizing = true;
             Window.Title = GAME_NAME + " by [Simon Bothen]"; //  set title to our game name
-           // Window.ClientSizeChanged += new EventHandler<EventArgs>(WindowSizeChanged);
         }
 
         protected override void Initialize()
@@ -99,17 +97,6 @@ namespace Battleship
             newScreen.setGraphics(Camera2D.getDefaultGraphics());
             newScreen.setDefaultViewPort(Camera2D.getDefaultGraphics().Viewport);
             currentScreen.init();
-        }
-
-        public void WindowSizeChanged(object sender, EventArgs e)
-        {
-            int new_width = graphics.GraphicsDevice.Viewport.Width;
-            int new_height = graphics.GraphicsDevice.Viewport.Height;
-
-
-            graphics.PreferredBackBufferWidth = new_width;
-            graphics.PreferredBackBufferHeight = (int)(new_width / aspectRatio);
-            graphics.ApplyChanges();
         }
 
         public static void changeResolution(int width, int height)

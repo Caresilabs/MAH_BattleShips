@@ -67,7 +67,7 @@ namespace Battleship.Entity
             if (MathUtils.random(0, 10) >= 9)
             {
                 selectAttack(MathUtils.random(0, getAttacks().Count - 1));
-            } 
+            }
 
             while (true)
             {
@@ -109,14 +109,14 @@ namespace Battleship.Entity
                                 lastHit = new Point(item.X, item.Y);
                                 consumedTiles[target.getX(item.X), target.getY(item.Y)] = id;
 
-                                if (target.getAliveShipParts(id) <= 1)
+                                if (target.getAliveShipParts(target.getTile(item.X, item.Y).getId()) <= 1)
                                 {
                                     sankBoat(id);
                                     lastHit = null;
                                 }
                             }
                         }
-                       
+
                         break;
                     }
                 }
@@ -141,7 +141,7 @@ namespace Battleship.Entity
                                 consumedTiles[target.getX(item.X), target.getY(item.Y)] = id;
                                 lastHit = new Point(item.X, item.Y);
 
-                                if (target.getAliveShipParts(id) <= 1)
+                                if (target.getAliveShipParts(target.getTile(item.X, item.Y).getId()) <= 1)
                                 {
                                     sankBoat(id);
                                     lastHit = null;

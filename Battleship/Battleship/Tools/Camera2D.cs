@@ -28,6 +28,7 @@ namespace Battleship.Tools
             this.rotation = 0f;
             this.zoom = new Vector2(1, 1);
             this.position = Vector2.Zero;
+            this.update(0);
         }
 
         public void update(float delta)
